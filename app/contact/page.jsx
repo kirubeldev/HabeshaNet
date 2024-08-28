@@ -1,3 +1,5 @@
+import ContactForm from '@/components/ContactForm'
+import { Contact } from 'lucide-react'
 import React from 'react'
 
 const page = () => {
@@ -43,6 +45,11 @@ const page = () => {
             
 
         </div>
+
+
+
+<ContactForm />
+       
     </div>
   )
 }
