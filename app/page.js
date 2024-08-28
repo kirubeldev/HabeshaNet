@@ -10,12 +10,13 @@ import 'slick-carousel/slick/slick-theme.css';
 
 import Testimonials from "@/components/Testimonials";
 import Footer from "@/components/Footer";
+import About from "@/components/about";
 
 
 export default function Home() {
   return (
     <div>
-      <Nav/>
+
       <Hero />
     <Partners />
     <Howitworks/>

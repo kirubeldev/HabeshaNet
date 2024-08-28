@@ -56,7 +56,7 @@ const PricePage = () => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col justify-center md:flex-row w-full gap-[20px] mt-[40px]">
+      {!monthly &&  <div className="flex flex-col justify-center md:flex-row w-full gap-[20px] mt-[40px]">
 
         <PriceCard
         title="Free"
@@ -87,7 +87,18 @@ const PricePage = () => {
         buttonText="Get Started"
       />
 
-        </div>
+
+        </div>}
+
+       { monthly && <div className="flex flex-col justify-center md:flex-row w-full gap-[20px] mt-[40px]">
+        <PriceCard
+        title="Yearly"
+        description="Best for personal use"
+        price="$99.99"
+        features={features}
+        buttonText="Get Started"
+      />
+</div>}
       </div>
     </div>
   );
