@@ -14,15 +14,16 @@ const Nav = () => {
                     <li><Link  className='text-[16px]  font-bold  text-bold' href="/"> Home </Link></li>
                     <li><Link  className='text-[16px]  font-bold text-bold' href="/about"> About us </Link></li>
                     <li><Link  className='text-[16px]  font-bold text-bold'  href=""> Service </Link></li>
-                    <li><Link  className='text-[16px]  font-bold text-bold'  href="/pricing">priceing  </Link></li>
+                    <li><Link  className='text-[16px]  font-bold text-bold'  href="/pricing">pricing  </Link></li>
                     <li><Link  className='text-[16px]  font-bold text-bold'  href="/contact"> Contact us </Link></li>
                 </ul>
             </nav>
         </div>
         <div>
+            <Link  href={"/hirep1"}>
             <button className='py-[10px] rounded-lg px-[30px] text-white bg-[#0097FF]'>
                 Get Started
-            </button>
+            </button></Link>
         </div>
       </div>
     </div>
