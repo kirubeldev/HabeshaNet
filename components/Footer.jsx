@@ -13,7 +13,7 @@ const Footer = () => {
       <h1 className='text-[36px] font-bold '>Ready to launch your next project?</h1>
       With lots of unique blocks, you can easily build a page without coding. Build your <br />next landing page.
         </div>
-        <Link href={'/hirep1'}>
+        <Link href={'/create'}>
         <button className='py-[10px] h-fit rounded-lg px-[30px] text-white flex gap-3 items-center bg-[#0097FF]'> Get Started <FaArrowRightLong />
 </button></Link>
     </div>

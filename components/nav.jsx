@@ -20,7 +20,7 @@ const Nav = () => {
             </nav>
         </div>
         <div>
-            <Link  href={"/hirep1"}>
+            <Link  href={"/create"}>
             <button className='py-[10px] rounded-lg px-[30px] text-white bg-[#0097FF]'>
                 Get Started
             </button></Link>
