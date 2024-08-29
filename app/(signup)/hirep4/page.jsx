@@ -2,25 +2,29 @@
 import React, { useState } from 'react';
 import Thankyou from '@/components/thankyou';
 import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 
 const Page = () => {
     const [showThankYou, setShowThankYou] = useState(false);
-   
-  
+    const router = useRouter(); // Use useRouter here
+
     const handleFinish = () => {
-      setShowThankYou(true);
-     
+        setShowThankYou(true);
+        
+        setTimeout(() => {
+            router.push('/'); // Use router.push to navigate
+        }, 2000);
     };
-  
+
     useEffect(() => {
-      if (showThankYou) {
-        document.body.style.overflow = 'hidden'; // Prevent scrolling when thank you message is shown
-      } else {
-        document.body.style.overflow = 'auto'; // Restore scrolling
-      }
+        if (showThankYou) {
+            document.body.style.overflow = 'hidden'; // Prevent scrolling when thank you message is shown
+        } else {
+            document.body.style.overflow = 'auto'; // Restore scrolling
+        }
     }, [showThankYou]);
-  
+
   return (
     <div>
        <div>
