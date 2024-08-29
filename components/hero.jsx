@@ -29,7 +29,7 @@ const Hero = () => {
               quae <br /> similique iste quaerat sumos temporibus nemo esse quis
               pariatur sumo <br /> repudiandae. Voluptas.
             </p>
-            <div className="flex justify-between">
+            <div className="flex justify-between pt-4">
               <button className="py-[10px] flex gap-3 items-center rounded-lg px-[30px] text-white bg-[#0097FF]">
                 Find a Professional <FaArrowRightLong />
               </button>
