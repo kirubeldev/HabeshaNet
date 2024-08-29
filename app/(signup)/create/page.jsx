@@ -5,7 +5,7 @@ import { FaRegCircle } from "react-icons/fa";
 import { PiHandbag } from "react-icons/pi";
 import Link from 'next/link';
 
-const page = () => {
+const Page = () => {
   const [selectedOption, setSelectedOption] = useState(null);
 
   const handleOptionSelect = (option) => {
@@ -44,13 +44,14 @@ const page = () => {
               <p>I am a Freelancer, <br /> looking for work.</p>
             </div>
           </div>
-<Link href={"/hirep1"}>
-          <button
-            className={`py-3 px-6 rounded-md ${selectedOption ? 'bg-[#0097FF] text-white' : 'bg-[#ECF1F4] text-[#9E9EA1]'} cursor-pointer`}
-            disabled={!selectedOption}
-          >
-            Create Account
-          </button></Link>
+          <Link href={"/hirep1"}>
+            <button
+              className={`py-3 px-6 rounded-md ${selectedOption ? 'bg-[#0097FF] text-white' : 'bg-[#ECF1F4] text-[#9E9EA1]'} cursor-pointer`}
+              disabled={!selectedOption}
+            >
+              Create Account
+            </button>
+          </Link>
 
           <p>Already have an account? <Link className='text-blue-600 underline' href="/login">Log in</Link></p>
         </div>
@@ -59,4 +60,4 @@ const page = () => {
   );
 }
 
-export default page;
+export default Page;
