@@ -11,11 +11,11 @@ const Nav = () => {
         <div>
             <nav>
                 <ul className='flex gap-[30px]'>
-                    <li><Link  className='text-[16px]  font-bold  text-bold' href="/"> Home </Link></li>
-                    <li><Link  className='text-[16px]  font-bold text-bold' href="/about"> About us </Link></li>
-                    <li><Link  className='text-[16px]  font-bold text-bold'  href=""> Service </Link></li>
-                    <li><Link  className='text-[16px]  font-bold text-bold'  href="/pricing">pricing  </Link></li>
-                    <li><Link  className='text-[16px]  font-bold text-bold'  href="/contact"> Contact us </Link></li>
+                    <li><Link  className='text-[16px]  font-semibold  ' href="/"> Home </Link></li>
+                    <li><Link  className='text-[16px]  font-semibold ' href="/about"> About us </Link></li>
+                    <li><Link  className='text-[16px]  font-semibold '  href=""> Service </Link></li>
+                    <li><Link  className='text-[16px]  font-semibold '  href="/pricing">pricing  </Link></li>
+                    <li><Link  className='text-[16px]  font-semibold '  href="/contact"> Contact us </Link></li>
                 </ul>
             </nav>
         </div>

@@ -3,7 +3,7 @@ import herobg from "../public/herobg.jpg";
 import Image from "next/image";
 import { FaArrowRightLong } from "react-icons/fa6";
 
-const Hero = () => {
+const EmployerHero = () => {
   return (
     <div
       style={{
@@ -17,31 +17,25 @@ const Hero = () => {
       <div className="flex md:flex-row flex-col justify-center md:justify-between md:max-w-6xl mx-auto  pt-8 w-full">
         <div className="flex w-1/2 justify-start items-center">
           <div className="flex flex-col">
-            <h1 className="text-[#020617] text-[52px]  font-bold">
-              make your business <br /> powerful with shade
-            </h1>
+            <h1 className="text-[#020617] text-[32px] md:text-[48px]  font-bold">
+            Post Jobs, Find Your Next Hire Quickly            </h1>
 
-            <p className="text-[#3C3C51]">
+            <p className="text-[#3C3C51] text-[16px]">
               {" "}
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. At
-              accusantium <br />
-              laborum adipisci hic expedita recusandaeid, facere tempore labore
-              quae <br /> similique iste quaerat sumos temporibus nemo esse quis
-              pariatur sumo <br /> repudiandae. Voluptas.
-            </p>
-            <div className="flex justify-between pt-4">
-              <button className="py-[10px] flex gap-3 items-center rounded-lg px-[30px] text-white bg-[#0097FF]">
-                Find a Professional <FaArrowRightLong />
+              Post jobs and access candidate profiles with ease.            </p>
+            <div className="flex gap-12 pt-12">
+              <button className="py-[10px] flex gap-3 items-center rounded-lg px-[38px] text-white bg-[#0097FF]">
+               Post Job <FaArrowRightLong />
               </button>
               <button className="py-[10px] border flex gap-3 rounded-lg px-[30px]">
-                Offer Your Services
+              Explore profile
               </button>
             </div>
           </div>
         </div>
         <div className="flex w-1/2 justify-center items-center">
           <img
-            src="./herochick.svg"
+            src="./emphero.svg"
             className="w-[500px] h-[450px] 2xl:w-[640px] 2xl:h-[701px] "
           />
         </div>
@@ -50,4 +44,4 @@ const Hero = () => {
   );
 };
 
-export default Hero;
+export default EmployerHero;
