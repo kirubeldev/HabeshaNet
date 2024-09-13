@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import Link from "next/link";
 import React, { useState } from "react";
 import { FaUser } from "react-icons/fa";
@@ -71,11 +71,15 @@ const jobPosts = [
 
 const Page = () => {
   const [selectedFilter, setSelectedFilter] = useState("All Job Posts");
+  const [searchQuery, setSearchQuery] = useState("");
 
-  // Filter job posts based on selected filter
-  const filteredJobs = jobPosts.filter((job) =>
-    selectedFilter === "All Contracts" ? job.type === "Contract" : true
-  );
+  // Filter job posts based on selected filter and search query
+  const filteredJobs = jobPosts.filter((job) => {
+    const matchesFilter =
+      selectedFilter === "All Contracts" ? job.type === "Contract" : true;
+    const matchesSearch = job.title.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesFilter && matchesSearch;
+  });
 
   return (
     <div>
@@ -85,10 +89,10 @@ const Page = () => {
             <FiSearch className="mr-5" />
             <input
               type="text"
-              name=""
-              id=""
-              placeholder="Search job postings "
+              placeholder="Search job postings"
               className="outline-none text-[14px] py-1 md:w-[570px] xl:[774px] "
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
 

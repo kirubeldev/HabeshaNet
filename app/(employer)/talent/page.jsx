@@ -30,7 +30,7 @@ const page = () => {
         </div>
         <div className='relative'>
 
-        <div className='grid md:grid-cols-3 2xl:grid-cols-4 gap-4 max-h-[80vh] overflow-y-scroll ' >
+        <div className='grid md:grid-cols-3 s gap-4 max-h-[80vh] overflow-y-scroll  px-4' >
 
            <TalentCards/>
            <TalentCards/>
