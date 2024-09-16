@@ -64,74 +64,67 @@ const Page = () => {
       
     </div>
 
-      <AppleandGoogle title={"  Sign up to hire talent"}/>
+      
+    <div className="mt-[50px] flex item-center justify-center">
+       <div className="py-5 px-6 shadow-md "> 
+        <div className=" text-center text-[26px] pb-4 font-semibold">
 
-      <div className='max-w-6xl mx-auto mt-[50px]'>
-        <div className='flex flex-col'>
-          <form onSubmit={handleSubmit} className='space-y-6'>
-            <div className='flex flex-col w-full md:justify-between space-y-6 md:space-y-0'>
-              <div className='w-full '>
-                <div className='space-y-4'>
-                  <p className='text-[#161C2D] font-bold text-[16px] mt-4'>Email</p>
+        <p>Sign Up as Offer Service</p>
+        </div>
+        <div className='space-y-4'>
+                  <p className='text-[#161C2D] font-bold text-[16px] mt-4'>Email / Phone Number</p>
+               
+                  
                   <input
-                    type="text"
-                    name="email"
-                    className='border p-2 rounded-xl text-[14px]  w-full'
-                    placeholder='i.e. john.doe@example.com'
-                    value={formData.email}
-                    onChange={handleChange}
-                  />
-                  {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
-                </div>
-                <div className='space-y-4'>
-                  <p className='text-[#161C2D] font-bold text-[16px] mt-4'>Phone Number</p>
-                  <input
-                    type="text"
+                    type="password"
                     name="phoneNumber"
-                    className='border p-2 rounded-xl text-[14px]  w-full'
+                    className=' p-2 border rounded-xl outline-none text-[14px] md:min-w-[350px] w-full'
                     placeholder='i.e. (123) 456-7890'
-                    value={formData.phoneNumber}
-                    onChange={handleChange}
-                  />
-                  {errors.phoneNumber && <p className="text-red-500 text-sm">{errors.phoneNumber}</p>}
+                    
+                    />
+                   
+                   
                 </div>
-              </div>
-              <div className='w-full '>
+
                 <div className='space-y-4'>
                   <p className='text-[#161C2D] font-bold text-[16px] mt-4'>Password</p>
+                 <div className="flex item-center p-2 border rounded-xl">
+                  
                   <input
                     type="password"
-                    name="password"
-                    className='border p-2 rounded-xl text-[14px]  w-full'
-                    placeholder='Enter your password'
-                    value={formData.password}
-                    onChange={handleChange}
-                  />
-                  {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
+                    name="phoneNumber"
+                    className='   outline-none text-[14px] md:min-w-[350px] w-full'
+                    placeholder='i.e. (123) 456-7890'
+                    
+                    />
+                    <img src="./eye.png" className="object-cover size-[20px] " />
+                    </div>
                 </div>
+
                 <div className='space-y-4'>
                   <p className='text-[#161C2D] font-bold text-[16px] mt-4'>Confirm Password</p>
+                 <div className="flex item-center p-2 border rounded-xl">
+                  
                   <input
                     type="password"
-                    name="confirmPassword"
-                    className='border p-2 rounded-xl text-[14px]  w-full'
-                    placeholder='Confirm your password'
-                    value={formData.confirmPassword}
-                    onChange={handleChange}
-                  />
-                  {errors.confirmPassword && <p className="text-red-500 text-sm">{errors.confirmPassword}</p>}
+                    name="phoneNumber"
+                    className='   outline-none text-[14px] md:min-w-[350px] w-full'
+                    placeholder='i.e. (123) 456-7890'
+                    
+                    />
+                    <img src="./eye.png" className="object-cover size-[20px] " />
+                    </div>
                 </div>
-              </div>
-            </div>
-          <Link href={"/hirep2"} >  <button
-              type="submit"
-              className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-md w-fit flex justify-center mx-auto"
-            >
-              Create Account
-            </button></Link>
-          </form>
+                <div className="flex justify-center "> 
+
+<Link href="/Verification">
+                <button className="bg-[#0097FF] mt-[40px] rounded-md text-white py-[7px] px-[30px]">Create Account</button>
+</Link>
+                </div>
+
         </div>
-      </div>
+    
+    </div>
     </div>
   );
 };

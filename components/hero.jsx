@@ -39,10 +39,10 @@ const Hero = () => {
             </div>
           </div>
         </div>
-        <div className="flex w-1/2 justify-center items-center">
+        <div className="flex w-1/2 justify-center items-center 2xl:mt-12">
           <img
-            src="./herochick.svg"
-            className="w-[500px] h-[450px] 2xl:w-[640px] 2xl:h-[701px] "
+            src="./heron.jpg"
+            className="  2xl:min-w-[640px] 2xl:min-h-[501px] object-cover "
           />
         </div>
       </div>

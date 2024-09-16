@@ -12,39 +12,57 @@ const Page = () => {
     setSelectedOption(option);
   };
 
+  const options = [
+    {
+      key: 'client',
+      icon: <RiUserFollowLine className='size-[25px]' />,
+      text: "I am Employer Looking For Skills"
+    },
+    {
+      key: 'freelancer',
+      icon: <PiHandbag className='size-[25px]' />,
+      text: "I am Landlord who want to, Sell Or Rent Properties."
+    },
+    {
+      key: 'jobSeeker',
+      icon: <PiHandbag className='size-[25px]' />,
+      text: "I am Job Seeker Looking for Work"
+    },
+    {
+      key: 'serviceProvider',
+      icon: <PiHandbag className='size-[25px]' />,
+      text: "I am Service Provider, Offers Service"
+    },
+    {
+      key: 'baby',
+      icon: <PiHandbag className='size-[25px]' />,
+      text: "I am Looking for baby sitter"
+    }
+  ];
+
   return (
     <div>
-      <div className='flex justify-center mx-auto items-center h-[90vh] max-w-6xl'>
-        <div className='flex flex-col space-y-6 mx-auto w-full justify-center items-center'>
-          <div>
-            <h1 className='text-[30px] md:text-[42px] font-bold'>
-              Join as a client or freelancer
-            </h1>
-          </div>
-          <div className='flex-col w-fit md:flex-row space-y-6 flex pb-4 md:w-full items-end justify-evenly'>
-            <div
-              className={`flex px-10 py-6 flex-col gap-3 border rounded-md cursor-pointer ${selectedOption === 'client' ? 'bg-blue-100' : ''}`}
-              onClick={() => handleOptionSelect('client')}
-            >
-              <div className='flex items-center justify-between'>
-                <RiUserFollowLine className='size-[25px]' />
-                <FaRegCircle className='size-[25px]' />
+      <div className='flex justify-center mx-auto items-center min-h-[90vh] max-w-6xl'>
+        <div className='flex flex-col mt-[40px] mb-[40px] space-y-6 mx-auto w-full justify-center items-center'>
+          <h1 className='text-[30px] md:text-[42px] font-bold'>
+          Join Our Platform 
+          </h1>
+          <div className='grid content-center grid-cols-2  lg:grid-cols-3 mx-auto pb-4 gap-6 text-center items-center'>
+            {options.map(option => (
+              <div
+                key={option.key}
+                className={`flex px-10 py-6 flex-col gap-3 border rounded-md cursor-pointer ${selectedOption === option.key ? 'bg-blue-100' : ''}`}
+                onClick={() => handleOptionSelect(option.key)}
+              >
+                <div className='flex items-center justify-between'>
+                  {option.icon}
+                  <FaRegCircle className='size-[25px]' />
+                </div>
+                <p className="max-w-[156px]">{option.text}</p>
               </div>
-              <p>I am a client, hiring <br /> for a project.</p>
-            </div>
-
-            <div
-              className={`flex px-[50px] py-6 flex-col gap-3 border rounded-md cursor-pointer ${selectedOption === 'freelancer' ? 'bg-blue-100' : ''}`}
-              onClick={() => handleOptionSelect('freelancer')}
-            >
-              <div className='flex items-center justify-between'>
-                <PiHandbag className='size-[25px]' />
-                <FaRegCircle className='size-[25px]' />
-              </div>
-              <p>I am a Freelancer, <br /> looking for work.</p>
-            </div>
+            ))}
           </div>
-          <Link href={"/hirep1"}>
+          <Link href={"/signup"}>
             <button
               className={`py-3 px-6 rounded-md ${selectedOption ? 'bg-[#0097FF] text-white' : 'bg-[#ECF1F4] text-[#9E9EA1]'} cursor-pointer`}
               disabled={!selectedOption}
@@ -52,7 +70,6 @@ const Page = () => {
               Create Account
             </button>
           </Link>
-
           <p>Already have an account? <Link className='text-blue-600 underline' href="/login">Log in</Link></p>
         </div>
       </div>
