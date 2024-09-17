@@ -130,33 +130,24 @@ const page = () => {
           <p className="text-[20px]">More information</p>
 
           <div className='flex flex-col'>
-            <div className="flex justify-around item-center">
+          <div className="flex item-center w-full gap-6">
+    <div className="w-1/2">
+      <p>Service Catagory</p>
+      <input type="text" className='border p-2 w-full rounded-xl text-[14px]' placeholder='i.e. john.doe@example.com' />
+      
+    </div>
 
-            <p className='text-[14px] font-semibold pb-4'>Service Catagory</p>
-            <p className='text-[14px] font-semibold pb-4'>Service Title</p>
-            
-            </div>
+    <div className="w-1/2">
+      <p>Service Title </p>
+      <input type="text" className='border p-2 w-full rounded-xl text-[14px]' placeholder='i.e. john.doe@example.com' />
+      
+    </div>
+   </div>
         <div className='rounded-xl space-y-6'>
           <div className='flex justify-between gap-4'>
           
-            <div className='space-y-6 w-[48%]'>
-              <div className='space-y-4 flex flex-col'>
-                <p>
-                  <span className='text-[#161C2D] font-bold text-[16px]'>State <span className='text-[#747171]'> </span> </span>
-                </p>
-                <input type="text" className='border p-2 rounded-xl text-[14px]' placeholder='state' />
-              </div>
-              
-            </div>
-            <div className='space-y-6 w-[48%]'>
-              <div className='space-y-4 flex flex-col'>
-                <p>
-                  <span className='text-[#161C2D] font-bold text-[16px]'>State <span className='text-[#747171]'></span> </span>
-                </p>
-                <input type="text" className='border p-2 rounded-xl text-[14px]' placeholder='country' />
-              </div>
-              
-            </div>
+            
+            
           </div>
          
         
@@ -218,7 +209,7 @@ const page = () => {
           
           <div className='flex justify-between mt-4 gap-4'>
             
-            <div className='space-y-6 w-[10%]'>
+            <div className='space-y-6 w-[12%]'>
               <p>Qualification 1</p>
  
             </div>
@@ -256,13 +247,102 @@ const page = () => {
               </div>
           <button className="py-[7px] px-[30px] rounded-md bg-[#3C3C51] text-white ">Add New Qualifications</button>
           
+
+
+    
+
+  <div className="flex  flex-col md:flex-row item-center justify-center mx-auto  gap-6">
+
+    <div className="flex flex-col bg-[#F8F8F8] w-fit p-3 rounded-md">
+   <p className="font-semibold">Skill 1</p>
+   <input type="text " className="w-[304px] border p-1 border-gray mt-1 rounded-md bg-transparent" placeholder="skill"/>
+   <button className="py-[7px] px-8 mt-10 rounded-md w-fit  bg-[#3C3C51] text-white ">Add New Skill</button>
+       
+       </div>
+
+       <div className="flex flex-col bg-[#F8F8F8] w-fit p-3 rounded-md">
+   <p className="font-semibold">Portofolio 1</p>
+   <input type="text " className="w-[304px] border p-1 border-gray mt-1 rounded-md bg-transparent" placeholder="skill"/>
+   <button className="py-[7px] px-8 mt-10 rounded-md w-fit  bg-[#3C3C51] text-white ">Add New Portifolio</button>
+       
+       </div>
+
+       <div className="flex flex-col bg-[#F8F8F8] w-fit p-3 rounded-md">
+   <p className="font-semibold">Portifolio File 1</p>
+   <input type="file" className='border p-2 text-gray rounded-xl text-[14px]' placeholder='i.e. Inquiry' />
+   <button className="py-[7px] px-8 mt-10 rounded-md w-fit  bg-[#3C3C51] text-white ">Add New Portifolio</button>
+       
+       </div>
+  </div>
+     
+
+
+
+<div className="flex item-center gap-5">
+
+
+
+   <div className="flex item-center py-4 ">
+   <div className="flex flex-col py-6 px-3 bg-[#F8F8F8] w-fit rounded-md">
+   <p className="font-semibold">Shift time</p>
+   <p className="text-[12px] font-light">start time</p>
+   <input type="time" className='border p-2 text-gray rounded-xl w-[240px] text-[14px]' placeholder='i.e. Inquiry' />
+       
+       </div>
+       <div className="flex  flex-col bg-[#F8F8F8] w-fit py-6 px-3 rounded-md">
+   <p className="font-semibold hidden">Shift time</p>
+   <p className="text-[12px] mt-6 font-light ">start time</p>
+   <input type="time" className='border p-2  text-gray rounded-xl w-[240px] text-[14px]' placeholder='i.e. Inquiry' />
+       
+       </div>
+   </div>
+
+
+
+
+   <div className="flex flex-col h-fit py-4 px-3 bg-[#F8F8F8] w-fit rounded-md">
+
+   <p>working Days</p>
+
+   <div className="flex item-center  mt-3 flex-wrap gap-4">
+ <p className="border cursor-pointer rounded-md px-[27px] py-[10px]">Mon</p>
+ <p className="border cursor-pointer rounded-md px-[27px] py-[10px]">Tue</p>
+ <p className="border cursor-pointer rounded-md px-[27px] py-[10px]">Wen</p>
+ <p className="border cursor-pointer rounded-md px-[27px] py-[10px]">Thu</p>
+ <p className="border cursor-pointer rounded-md px-[27px] py-[10px]">Fri</p>
+ <p className="border cursor-pointer rounded-md px-[27px] py-[10px]">Sat</p>
+ <p className="border cursor-pointer rounded-md px-[27px] py-[10px]">Sun</p>
+
+   </div>
+
+</div>
+       </div>
+
+
+   <div className="flex item-center w-full gap-6">
+    <div className="w-1/2">
+      <p>Hourly Rate</p>
+      <input type="text" className='border p-2 w-full rounded-xl text-[14px]' placeholder='i.e. john.doe@example.com' />
+      
+    </div>
+
+    <div className="w-1/2">
+      <p>Language </p>
+      <input type="text" className='border p-2 w-full rounded-xl text-[14px]' placeholder='i.e. john.doe@example.com' />
+      
+    </div>
+   </div>
         </div>
        
       </div>
     </div>
 
 
-  
+  <div className="flex item-center justify-center">
+    <Link href="">
+    <button className="bg-[#0097FF] text-white px-[30px] mt-[50px] py-[7px] rounded-md " >Save Profile</button>
+    </Link>
+  </div>
 
     </div>
   )
