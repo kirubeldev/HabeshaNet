@@ -5,8 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { z } from 'zod';
-import axios from "axios";
-
+import axios from "@/api/axios"
 // Zod schema for form validation
 const SignupSchema = z.object({
   emailorphoneNumber: z.union([
@@ -43,7 +42,7 @@ const Page = () => {
       setErrors({});
   
       // Send the data to the server
-      const response = await axios.post("http://localhost:3000/auth/signup", {
+      const response = await axios.post("/auth/signup", {
         userType: "serviceProvider",
         email: formData.emailorphoneNumber,
         password: formData.password,
@@ -53,12 +52,10 @@ const Page = () => {
       console.log('Form submitted successfully', response);
   
       if (response.status === 201) {
-        const { verificationToken } = response.data; // Adjust according to your response structure
+        
         
         // Store the verification token in local storage
-        if (verificationToken) {
-          localStorage.setItem('verificationToken', verificationToken);
-        }
+       
   
         // Navigate to the Verification page
         router.push("/Verification");
