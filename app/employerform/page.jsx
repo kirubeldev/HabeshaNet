@@ -1,3 +1,5 @@
+import Employer from '@/components/Employer'
+import React from 'react'
 
 import ServiceProviderform from "@/components/serviceProviderform"
 
@@ -10,8 +12,7 @@ const Page = ()=> {
   const verificationToken = cookieStore.get('act' ) 
   return(
 <div>
-<ServiceProviderform accestocken= {verificationToken?.value}/>
+<Employer accestocken= {verificationToken?.value}/>
 </div>
-  )
-}
-export default Page;
+  )}
+  export default Page

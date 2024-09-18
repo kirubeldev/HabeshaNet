@@ -1,5 +1,5 @@
 
-import ServiceProviderform from "@/components/serviceProviderform"
+import Renter from "@/components/Renter"
 
 import { cookies } from 'next/headers'
  
@@ -10,7 +10,7 @@ const Page = ()=> {
   const verificationToken = cookieStore.get('act' ) 
   return(
 <div>
-<ServiceProviderform accestocken= {verificationToken?.value}/>
+<Renter accestocken= {verificationToken?.value}/>
 </div>
   )
 }

@@ -1,5 +1,5 @@
 
-import ServiceProviderform from "@/components/serviceProviderform"
+import BabySitterFinder from "@/components/babySitterFinder"
 
 import { cookies } from 'next/headers'
  
@@ -10,7 +10,7 @@ const Page = ()=> {
   const verificationToken = cookieStore.get('act' ) 
   return(
 <div>
-<ServiceProviderform accestocken= {verificationToken?.value}/>
+<BabySitterFinder accestocken= {verificationToken?.value}/>
 </div>
   )
 }

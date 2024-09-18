@@ -57,9 +57,9 @@ const Page = () => {
           fieldErrors[error.path[0]] = error.message;
         });
         setErrors(fieldErrors);
-      } else if (axios.isAxiosError(err)) {
+      } else if (err) {
         console.error('Error submitting form:', err.response?.data || err.message);
-        setErrors({ submit: 'Failed to create account. Please try again later.' });
+        setErrors({ submit: 'Failed to. Please try again later.' + Response.message });
       }
     } finally {
       setLoading(false); // Reset loading state
