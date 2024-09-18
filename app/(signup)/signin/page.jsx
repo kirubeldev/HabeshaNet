@@ -3,26 +3,29 @@ import AppleandGoogle from '@/components/appleandGoogle';
 import Progressbar from '@/components/Progressbar';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React, { useState, useEffect } from 'react';
-import axios  from '@/api/axios';
-import { useSearchParams } from 'next/navigation'
+import React, { useState } from 'react';
+import { z } from 'zod';
+import axios from "@/api/axios";
 
+// Zod schema for form validation
+const SignupSchema = z.object({
+  emailorphoneNumber: z.union([
+    z.string().email('Invalid email address'),
+    z.string().min(10, 'Phone number must be at least 10 digits'),
+  ]),
+  password: z.string().min(8, 'Password must be at least 8 characters long'),
+});
 
 const Page = () => {
   const [formData, setFormData] = useState({
     emailorphoneNumber: '',
     password: '',
-    confirmPassword: '',
   });
-  const searchParams = useSearchParams()
- 
-  const userType = searchParams.get('userType')
+
   const router = useRouter();
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
- 
-
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -30,62 +33,43 @@ const Page = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const fieldErrors = {};
-    if (!formData.emailorphoneNumber) {
-      fieldErrors.emailorphoneNumber = 'Required';
-    }
-    if (formData.password.length < 8) {
-      fieldErrors.password = 'Password must be at least 8 characters long';
-    }
-    if (formData.confirmPassword.length < 8) {
-      fieldErrors.confirmPassword = 'Confirm Password must be at least 8 characters long';
-    }
-    if (formData.password !== formData.confirmPassword) {
-      fieldErrors.confirmPassword = "Passwords don't match";
-    }
-
-    if (Object.keys(fieldErrors).length > 0) {
-      setErrors(fieldErrors);
-      return;
-    }
-
-    setErrors({});
-
-    console.log({
-      userType,
-      email: formData.emailorphoneNumber,
-      password: formData.password,
-      confirmPassword: formData.confirmPassword,
-    });
-
+    setLoading(true); // Set loading state
     try {
-      const response = await axios.post("auth/signup", {
-        userType,
-        email: formData.emailorphoneNumber,
+      SignupSchema.parse(formData);
+      setErrors({});
+
+      // Send the data to the server
+      const response = await axios.post("/auth/signin", {
+        emailOrPhone: formData.emailorphoneNumber,
         password: formData.password,
-        confirmPassword: formData.confirmPassword,
       });
 
-      console.log('Form submitted successfully', response);
+      console.log('Form submitted successfully', response.data);
 
       if (response.status === 201) {
+        // Navigate to the Verification page
         router.push("/Verification");
       }
     } catch (err) {
-      if (err) {
+      if (err instanceof z.ZodError) {
+        const fieldErrors = {};
+        err.errors.forEach((error) => {
+          fieldErrors[error.path[0]] = error.message;
+        });
+        setErrors(fieldErrors);
+      } else if (axios.isAxiosError(err)) {
         console.error('Error submitting form:', err.response?.data || err.message);
         setErrors({ submit: 'Failed to create account. Please try again later.' });
-      } else {
-        console.error('Unexpected error:', err);
-        setErrors({ submit: 'An unexpected error occurred. Please try again later.' });
       }
+    } finally {
+      setLoading(false); // Reset loading state
     }
   };
 
   return (
     <div>
       <div className='flex justify-center mt-10 items-center max-w-6xl mx-auto'>
+        {/* Progress indicators */}
         <div className='size-[35px] flex justify-center items-center bg-[#FC9B00] rounded-full text-white font-bold'>1</div>
         <div className='w-[200px] border md:w-[290px] border-[#B2B2B5]'></div>
         <div className='size-[35px] flex justify-center items-center border-[3px] border-[#FC9B00] rounded-full text-white font-bold'></div>
@@ -98,7 +82,7 @@ const Page = () => {
       <div className="mt-[50px] flex item-center justify-center">
         <div className="py-5 px-6 shadow-md">
           <div className="text-center text-[26px] pb-4 font-semibold">
-            <p>Sign Up as {userType ? userType.replace(/([A-Z])/g, ' $1') : 'User'}</p>
+            <p>Sign In</p>
           </div>
           <form className='space-y-4' onSubmit={handleSubmit}>
             <div>
@@ -137,33 +121,15 @@ const Page = () => {
               {errors.password && <p className='text-red-500'>{errors.password}</p>}
             </div>
 
-            <div>
-              <p className='text-[#161C2D] font-bold text-[16px] mt-4'>Confirm Password</p>
-              <div className="flex items-center p-2 border rounded-xl">
-                <input
-                  type={showConfirmPassword ? "text" : "password"}
-                  name="confirmPassword"
-                  className='outline-none text-[14px] md:min-w-[350px] w-full'
-                  placeholder='Confirm your password'
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  aria-label="Confirm Password"
-                />
-                <img 
-                  src="./eye.png" 
-                  className={`object-cover size-[20px] cursor-pointer transition-transform ${showConfirmPassword ? 'rotate-180' : ''}`} 
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)} 
-                  alt={showConfirmPassword ? "Hide confirm password" : "Show confirm password"}
-                />
-              </div>
-              {errors.confirmPassword && <p className='text-red-500'>{errors.confirmPassword}</p>}
-            </div>
-
             {errors.submit && <p className='text-red-500'>{errors.submit}</p>} {/* Display submit error */}
 
             <div className="flex justify-center">
-              <button type="submit" className="bg-[#0097FF] mt-[40px] rounded-md text-white py-[7px] px-[30px]">
-                Create Account
+              <button 
+                type="submit" 
+                className="bg-[#0097FF] mt-[40px] rounded-md text-white py-[7px] px-[30px]"
+                disabled={loading}
+              >
+                {loading ? 'Signing In...' : 'Sign In'}
               </button>
             </div>
           </form>

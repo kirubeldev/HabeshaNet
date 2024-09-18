@@ -1,8 +1,76 @@
-import AppleandGoogle from '@/components/appleandGoogle'
-import Link from 'next/link'
-import React from 'react'
+'use client'
 
-const page = () => {
+import React, { useState } from 'react';
+import Link from 'next/link';
+
+const Page = () => {
+  // State for form inputs
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [profession, setProfession] = useState('');
+  const [bio, setBio] = useState('');
+  const [profilePicture, setProfilePicture] = useState(null);
+  const [preferredContact, setPreferredContact] = useState('');
+  const [city, setCity] = useState('');
+  const [state, setState] = useState('');
+  const [country, setCountry] = useState('');
+  const [serviceCategory, setServiceCategory] = useState('');
+  const [serviceTitle, setServiceTitle] = useState('');
+  
+  const [experienceList, setExperienceList] = useState([{ position: '', years: '', responsibilities: [''], company: '', startDate: '', endDate: '' }]);
+  const [qualifications, setQualifications] = useState([{ degree: '', certifications: [''], training: '' }]);
+  const [skills, setSkills] = useState(['']);
+  const [portfolioLinks, setPortfolioLinks] = useState(['']);
+  const [portfolioFiles, setPortfolioFiles] = useState([]);
+  const [availabilityDays, setAvailabilityDays] = useState([]);
+  const [availabilityHours, setAvailabilityHours] = useState('');
+  const [hourlyRate, setHourlyRate] = useState('');
+  const [languages, setLanguages] = useState(['']);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const data = {
+      firstName,
+      lastName,
+      email,
+      phoneNumber,
+      profession,
+      bio,
+      profilePicture,
+      preferredContact,
+      location: { city, state, country },
+      serviceCategory,
+      serviceTitle,
+      experiences: experienceList,
+      qualifications,
+      skills,
+      portfolioLinks,
+      portfolioFiles,
+      availability: { days: availabilityDays, hours: availabilityHours },
+      hourlyRate,
+      languages,
+    };
+
+    try {
+      const response = await fetch('YOUR_API_URL', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        alert('Profile saved successfully!');
+      } else {
+        alert('Failed to save profile.');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('An error occurred. Please try again.');
+    }
+  };
+
   return (
     <div>
       <div>
@@ -25,15 +93,21 @@ const page = () => {
 
    <div className='max-w-6xl mx-auto mt-[50px]'>
       <div className='flex flex-col'>
-        <div className='border p-9 rounded-xl space-y-6'>
-          <p className="text-[20px]">Personal information</p>
+      <form onSubmit={handleSubmit} className='border p-9 rounded-xl space-y-6'>     
+             <p className="text-[20px]">Personal information</p>
           <div className='flex justify-between gap-4'>
             <div className='space-y-6 w-[48%]'>
               <div className='space-y-4 flex flex-col'>
                 <p>
                   <span className='text-[#161C2D] font-bold text-[16px]'>First Name</span>
                 </p>
-                <input type="text" className='border p-2 rounded-xl text-[14px]' placeholder='i.e. John Doe' />
+                <input type="text"  onChange={(e) => setFirstName(e.target.value)}  className='border p-2 rounded-xl text-[14px]' placeholder='i.e. John Doe' />
+              </div>
+              <div className='space-y-4 flex flex-col'>
+                <p>
+                  <span className='text-[#161C2D] font-bold text-[16px]'>First Name Name</span>
+                </p>
+                <input type="text"  onChange={(e) => setFirstName(e.target.value)}  className='border p-2 rounded-xl text-[14px]' placeholder='i.e. John Doe' />
               </div>
               <div className='space-y-4 flex flex-col'>
                 <p>
@@ -52,6 +126,12 @@ const page = () => {
               </div>
               <div className='space-y-4 flex flex-col'>
                 <p>
+                  <span className='text-[#161C2D] font-bold text-[16px]'>First Name</span>
+                </p>
+                <input type="text"  onChange={(e) => setFirstName(e.target.value)}  className='border p-2 rounded-xl text-[14px]' placeholder='i.e. John Doe' />
+              </div>
+              <div className='space-y-4 flex flex-col'>
+                <p>
                   <span className='text-[#161C2D] font-bold text-[16px]'>Prefered Contact Method</span>
                 </p>
                 <input type="text" className='border p-2 rounded-xl text-[14px]' placeholder='i.e. Inquiry' />
@@ -65,6 +145,12 @@ const page = () => {
                   <span className='text-[#161C2D] font-bold text-[16px]'>Email Address </span>
                 </p>
                 <input type="text" className='border p-2 rounded-xl text-[14px]' placeholder='i.e. john.doe@example.com' />
+              </div>
+              <div className='space-y-4 flex flex-col'>
+                <p>
+                  <span className='text-[#161C2D] font-bold text-[16px]'>First Name</span>
+                </p>
+                <input type="text"  onChange={(e) => setFirstName(e.target.value)}  className='border p-2 rounded-xl text-[14px]' placeholder='i.e. John Doe' />
               </div>
               <div className='space-y-4 flex flex-col'>
                 <p>
@@ -117,7 +203,7 @@ const page = () => {
        
       </div>
        
-        </div>
+        </form>
        
       </div>
     </div>
@@ -348,6 +434,6 @@ const page = () => {
   )
 }
 
-export default page
+export default Page
 
 

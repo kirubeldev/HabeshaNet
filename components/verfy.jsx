@@ -13,8 +13,7 @@ const VerificationForm = ({verificationToken}) => {
   
     const handleSubmit = async (e) => {
       e.preventDefault(); // Prevent default form submission
-        console.log(VerificationForm)
-      // Validate the pass input
+        
       if (!/^\d{6}$/.test(pass)) { // Check if pass is a 6-digit number
         setMessage('Please enter a valid 6-digit verification code.');
         return;
@@ -36,7 +35,7 @@ const VerificationForm = ({verificationToken}) => {
           localStorage.setItem('verificationToken', response.data.verificationToken); // Store the new token
         }
    if (response.status === 200) {
-    router.push("/hirep2");
+    router.push("/signin");
   
    }
         setMessage(response.data.message); // Set the success message
