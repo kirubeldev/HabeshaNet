@@ -22,9 +22,9 @@ const Page = () => {
       text: "I am Landlord who want to, Sell Or Rent Properties."
     },
     {
-      key: 'jobSeeker',
+      key: 'propertyRenter',
       icon: <PiHandbag className='size-[25px]' />,
-      text: "I am Job Seeker Looking for Work"
+      text: "I am property Renter Looking for property"
     },
     {
       key: 'serviceProvider',

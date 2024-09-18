@@ -30,169 +30,209 @@ const Page = () => {
   const [languages, setLanguages] = useState(['']);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    const data = {
-      firstName,
-      lastName,
-      email,
-      phoneNumber,
-      profession,
-      bio,
-      profilePicture,
-      preferredContact,
-      location: { city, state, country },
-      serviceCategory,
-      serviceTitle,
-      experiences: experienceList,
-      qualifications,
-      skills,
-      portfolioLinks,
-      portfolioFiles,
-      availability: { days: availabilityDays, hours: availabilityHours },
-      hourlyRate,
-      languages,
-    };
+   e.preventDefaults()
+   console.log("hey");
+   
+    // const data = {
+    //   firstName,
+    //   lastName,
+    //   email,
+    //   phoneNumber,
+    //   profession,
+    //   bio,
+    //   profilePicture,
+    //   preferredContact,
+    //   // location: { city, state, country },
+    //   serviceCategory,
+    //   serviceTitle,
+    //   experiences: experienceList,
+    //   // qualifications,
+    //   skills,
+    //   portfolioLinks,
+    //   portfolioFiles,
+    //   // availability: { days: availabilityDays, hours: availabilityHours },
+    //   hourlyRate,
+    //   languages,
+    // };
 
-    try {
-      const response = await fetch('YOUR_API_URL', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
+    // try {
+    //   const response = await fetch('/auth/service-providers/profile/complete', {
+    //     method: 'POST',
+    //     headers: { 'Content-Type': 'application/json' },
+    //     body: JSON.stringify(data),
+    //   });
 
-      if (response.ok) {
-        alert('Profile saved successfully!');
-      } else {
-        alert('Failed to save profile.');
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      alert('An error occurred. Please try again.');
-    }
+    //   if (response.ok) {
+    //     alert('Profile saved successfully!');
+    //   } else {
+    //     alert('Failed to save profile.');
+    //   }
+
+    //   console.log(  firstName,
+    //     lastName,
+    //     email,
+    //     phoneNumber,
+    //     profession,
+    //     bio,
+    //     profilePicture,
+    //     preferredContact,
+    //     // location: { city, state, country },
+    //     serviceCategory,
+    //     serviceTitle,
+    //     // experiences: experienceList,
+    //     qualifications,
+    //     skills,
+    //     portfolioLinks,
+    //     portfolioFiles,
+    //     // availability: { days: availabilityDays, hours: availabilityHours },
+    //     hourlyRate,
+    //     city.
+    //     state,country,
+    //     languages,)
+    // } catch (error) {
+    //   console.error('Error:', error);
+    //   alert('An error occurred. Please try again.');
+    // }
   };
 
   return (
     <div>
       <div>
         <div className='flex justify-center mt-10 items-center max-w-6xl mx-auto'>
- <div className='size-[35px] flex justify-center items-center bg-[#FC9B00] rounded-full text-white font-bold' >1</div>
+ <div className='size-[35px] flex justify-center items-center bg-[#FC9B00] rounded-full text-white font-semibold' >1</div>
        <div className='w-[200px] border md:w-[290px] border-[#B2B2B5] '></div>
-       <div className='size-[35px] flex justify-center items-center bg-[#FC9B00] rounded-full text-white font-bold' >2</div>
+       <div className='size-[35px] flex justify-center items-center bg-[#FC9B00] rounded-full text-white font-semibold' >2</div>
 
        <div className='w-[200px] border md:w-[290px] border-[#B2B2B5] '></div>
-       <div className='size-[35px] flex justify-center items-center  border-[3px] border-[#FC9B00] rounded-full text-white font-bold' ></div>
+       <div className='size-[35px] flex justify-center items-center  border-[3px] border-[#FC9B00] rounded-full text-white font-semibold' ></div>
        <div className='w-[200px] border md:w-[290px] border-[#B2B2B5] '></div>
-       <div className='size-[35px] flex justify-center items-center  border-[3px] border-[#FC9B00] rounded-full text-white font-bold' ></div>
+       <div className='size-[35px] flex justify-center items-center  border-[3px] border-[#FC9B00] rounded-full text-white font-semibold' ></div>
        
         </div>
       
     </div>
+    <form  onSubmit={handleSubmit}>
        
    <div className="flex item-center justify-center">
 <p className="text-[22px] mt-5 font-semibold">Fill Profile</p>   </div>
 
    <div className='max-w-6xl mx-auto mt-[50px]'>
       <div className='flex flex-col'>
-      <form onSubmit={handleSubmit} className='border p-9 rounded-xl space-y-6'>     
+      <div className='border p-9 rounded-md space-y-6'>     
              <p className="text-[20px]">Personal information</p>
           <div className='flex justify-between gap-4'>
             <div className='space-y-6 w-[48%]'>
               <div className='space-y-4 flex flex-col'>
                 <p>
-                  <span className='text-[#161C2D] font-bold text-[16px]'>First Name</span>
+                  <span className='text-[#161C2D] font-semibold text-[16px]'>First Name</span>
                 </p>
-                <input type="text"  onChange={(e) => setFirstName(e.target.value)}  className='border p-2 rounded-xl text-[14px]' placeholder='i.e. John Doe' />
+                <input type="text"  onChange={(e) => setFirstName(e.target.value)}  className='border p-2 rounded-md text-[14px]' placeholder='i.e. John Doe' />
               </div>
               <div className='space-y-4 flex flex-col'>
                 <p>
-                  <span className='text-[#161C2D] font-bold text-[16px]'>First Name Name</span>
+                  <span className='text-[#161C2D] font-semibold text-[16px]'>Phone Number</span>
                 </p>
-                <input type="text"  onChange={(e) => setFirstName(e.target.value)}  className='border p-2 rounded-xl text-[14px]' placeholder='i.e. John Doe' />
+                <input type="text"  onChange={(e) => setPhoneNumber(e.target.value)}  className='border p-2 rounded-md text-[14px]' placeholder='i.e. John Doe' />
               </div>
-              <div className='space-y-4 flex flex-col'>
-                <p>
-                  <span className='text-[#161C2D] font-bold text-[16px]'>Company Name</span>
-                </p>
-                <input type="text" className='border p-2 rounded-xl text-[14px]' placeholder='i.e. (123) 456-7890' />
-              </div>
+            
  
             </div>
             <div className='space-y-6 w-[48%]'>
               <div className='space-y-4 flex flex-col'>
                 <p>
-                  <span className='text-[#161C2D] font-bold text-[16px]'>Last Name </span>
+                  <span className='text-[#161C2D] font-semibold text-[16px]'>Last Name </span>
                 </p>
-                <input type="text" className='border p-2 rounded-xl text-[14px]' placeholder='i.e. john.doe@example.com' />
+                <input type="text" className='border p-2 rounded-md text-[14px]' placeholder='i.e. john.doe@example.com'    onChange={(e) => setLastName(e.target.value)}/>
               </div>
               <div className='space-y-4 flex flex-col'>
                 <p>
-                  <span className='text-[#161C2D] font-bold text-[16px]'>First Name</span>
+                  <span className='text-[#161C2D] font-semibold text-[16px]'>Profession</span>
                 </p>
-                <input type="text"  onChange={(e) => setFirstName(e.target.value)}  className='border p-2 rounded-xl text-[14px]' placeholder='i.e. John Doe' />
+                <input type="text"  onChange={(e) => setProfession(e.target.value)}  className='border p-2 rounded-md text-[14px]' placeholder='i.e. John Doe' />
               </div>
-              <div className='space-y-4 flex flex-col'>
-                <p>
-                  <span className='text-[#161C2D] font-bold text-[16px]'>Prefered Contact Method</span>
-                </p>
-                <input type="text" className='border p-2 rounded-xl text-[14px]' placeholder='i.e. Inquiry' />
-              </div>
+
+
               
             </div>
 
             <div className='space-y-6 w-[48%]'>
               <div className='space-y-4 flex flex-col'>
                 <p>
-                  <span className='text-[#161C2D] font-bold text-[16px]'>Email Address </span>
+                  <span className='text-[#161C2D] font-semibold text-[16px]'>Email Address </span>
                 </p>
-                <input type="text" className='border p-2 rounded-xl text-[14px]' placeholder='i.e. john.doe@example.com' />
+                <input type="text" className='border p-2 rounded-md text-[14px]'   onChange={(e) => setEmail(e.target.value)} placeholder='i.e. john.doe@example.com' />
               </div>
+             
+
               <div className='space-y-4 flex flex-col'>
                 <p>
-                  <span className='text-[#161C2D] font-bold text-[16px]'>First Name</span>
+                  <span className='text-[#161C2D] font-semibold text-[16px]'>Prefered Contact Method</span>
                 </p>
-                <input type="text"  onChange={(e) => setFirstName(e.target.value)}  className='border p-2 rounded-xl text-[14px]' placeholder='i.e. John Doe' />
+                <input type="text" className='border p-2 rounded-md text-[14px]'   onChange={(e) => setPreferredContact(e.target.value)} placeholder='i.e. Inquiry' />
               </div>
-              <div className='space-y-4 flex flex-col'>
-                <p>
-                  <span className='text-[#161C2D] font-bold text-[16px]'>profile Picture</span>
-                </p>
-                <div className="flex item-center">
-                   <img src="./user.png"  className="object-contain size-[50px] rounded-full mx-3" />
-                <input type="file" className='border p-2 text-gray rounded-xl text-[14px]' placeholder='i.e. Inquiry' />
-                </div>
-              </div>
+            
+
+              
             
             </div>
           </div>
+
+          <div className='flex flex-col'>
+         
+        <div className='rounded-md space-y-6'>
+          <div className='flex items-center gap-4'>
+          <div className='space-y-4 flex flex-col'>
+                <p>
+                  <span className='text-[#161C2D] font-semibold text-[16px]'>profile Picture</span>
+                </p>
+                <div className="flex item-center">
+                   <img src="./user.png"  className="object-contain size-[50px] rounded-full mx-3" />
+                <input type="file" className='border p-2 text-gray rounded-md text-[14px]'   onChange={(e) => setProfilePicture(e.target.files)} placeholder='i.e. Inquiry' />
+                </div>
+              </div>
+              <div className='space-y-4 flex flex-1 flex-col'>
+                <p>
+                  <span className='text-[#161C2D] font-semibold text-[16px]'>Bio </span>
+                </p>
+                <textarea type="text"    className='border px-2  rounded-md text-[14px]'   onChange={(e) => setBio(e.target.value)} placeholder='i.e. John Doe' />
+              </div>
+
+          
+          </div>
+         
+        
+        </div>
+       
+      </div>
           
           <div className='flex flex-col'>
-            <p className='text-[18px] font-bold pb-4'>Location</p>
-        <div className='rounded-xl space-y-6'>
+            <p className='text-[18px] font-semibold pb-4'>Location</p>
+        <div className='rounded-md space-y-6'>
           <div className='flex justify-between gap-4'>
             <div className='space-y-6 w-[48%] '>
               <div className='space-y-4 flex flex-col'>
                 <p>
-                  <span className='text-[#161C2D] font-bold text-[16px]'>city </span>
+                  <span className='text-[#161C2D] font-semibold text-[16px]'>city </span>
                 </p>
-                <input type="text" className='border p-2 rounded-xl text-[14px]' placeholder='city' />
+                <input type="text" className='border p-2 rounded-md text-[14px]'   onChange={(e) => setCity(e.target.value)} placeholder='city' />
               </div>
             
             </div>
             <div className='space-y-6 w-[48%]'>
               <div className='space-y-4 flex flex-col'>
                 <p>
-                  <span className='text-[#161C2D] font-bold text-[16px]'>State <span className='text-[#747171]'> </span> </span>
+                  <span className='text-[#161C2D] font-semibold text-[16px]'>State <span className='text-[#747171]'> </span> </span>
                 </p>
-                <input type="text" className='border p-2 rounded-xl text-[14px]' placeholder='state' />
+                <input type="text" className='border p-2 rounded-md text-[14px]'   onChange={(e) => setState(e.target.value)} placeholder='state' />
               </div>
               
             </div>
             <div className='space-y-6 w-[48%]'>
               <div className='space-y-4 flex flex-col'>
                 <p>
-                  <span className='text-[#161C2D] font-bold text-[16px]'>State <span className='text-[#747171]'></span> </span>
+                  <span className='text-[#161C2D] font-semibold text-[16px]'>State <span className='text-[#747171]'></span> </span>
                 </p>
-                <input type="text" className='border p-2 rounded-xl text-[14px]' placeholder='country' />
+                <input type="text" className='border p-2 rounded-md text-[14px]'   onChange={(e) => setCountry(e.target.value)} placeholder='country' />
               </div>
               
             </div>
@@ -203,7 +243,7 @@ const Page = () => {
        
       </div>
        
-        </form>
+        </div>
        
       </div>
     </div>
@@ -212,24 +252,24 @@ const Page = () => {
 
     <div className='max-w-6xl mx-auto mt-[50px]'>
       <div className='flex flex-col'>
-        <div className='border p-9 rounded-xl space-y-6'>
+        <div className='border p-9 rounded-md space-y-6'>
           <p className="text-[20px]">More information</p>
 
           <div className='flex flex-col'>
           <div className="flex item-center w-full gap-6">
     <div className="w-1/2">
       <p>Service Catagory</p>
-      <input type="text" className='border p-2 w-full rounded-xl text-[14px]' placeholder='i.e. john.doe@example.com' />
+      <input type="text" className='border p-2 w-full rounded-md text-[14px]'   onChange={(e) => setServiceCategory(e.target.value)} placeholder='i.e. john.doe@example.com' />
       
     </div>
 
     <div className="w-1/2">
       <p>Service Title </p>
-      <input type="text" className='border p-2 w-full rounded-xl text-[14px]' placeholder='i.e. john.doe@example.com' />
+      <input type="text" className='border p-2 w-full rounded-md text-[14px]'   onChange={(e) => setServiceTitle(e.target.value)} placeholder='i.e. john.doe@example.com' />
       
     </div>
    </div>
-        <div className='rounded-xl space-y-6'>
+        <div className='rounded-md space-y-6'>
           <div className='flex justify-between gap-4'>
           
             
@@ -249,48 +289,49 @@ const Page = () => {
             <div className='space-y-6 w-[48%]'>
               <div className='space-y-4 flex flex-col'>
                 <p>
-                  <span className='text-[#161C2D] font-bold text-[16px]'>Position </span>
+                  <span className='text-[#161C2D] font-semibold text-[16px]'>Position </span>
                 </p>
-                <input type="text" className='border p-2 rounded-xl text-[14px]' placeholder='i.e. john.doe@example.com' />
+                <input type="text" className='border p-2 rounded-md text-[14px]'   onChange={(e) => setFirstName(e.target.value)} placeholder='i.e. john.doe@example.com' />
               </div>
               <div className='space-y-4 flex flex-col'>
                 <p>
-                  <span className='text-[#161C2D] font-bold text-[16px]'>Responsibility</span>
+                  <span className='text-[#161C2D] font-semibold text-[16px]'>Responsibility</span>
                 </p>
-                <input type="text" className='border p-2 rounded-xl text-[14px]' placeholder='i.e. Inquiry' />
+                <input type="text" className='border p-2 rounded-md text-[14px]'   onChange={(e) => setFirstName(e.target.value)} placeholder='i.e. Inquiry' />
               </div>
               <div className='space-y-4 flex flex-col'>
                 <p>
-                  <span className='text-[#161C2D] font-bold text-[16px]'>Start Date </span>
+                  <span className='text-[#161C2D] font-semibold text-[16px]'>Start Date </span>
                 </p>
-                <input type="text" className='border p-2 rounded-xl text-[14px]' placeholder='i.e. john.doe@example.com' />
+                <input type="text" className='border p-2 rounded-md text-[14px]'   onChange={(e) => setFirstName(e.target.value)} placeholder='i.e. john.doe@example.com' />
               </div>
             </div>
 
             <div className='space-y-6 w-[48%]'>
               <div className='space-y-4 flex flex-col'>
                 <p>
-                  <span className='text-[#161C2D] font-bold text-[16px]'>Years of exeprience </span>
+                  <span className='text-[#161C2D] font-semibold text-[16px]'>Years of exeprience </span>
                 </p>
-                <input type="text" className='border p-2 rounded-xl text-[14px]' placeholder='i.e. john.doe@example.com' />
+                <input type="text" className='border p-2 rounded-md text-[14px]'   onChange={(e) => setFirstName(e.target.value)} placeholder='i.e. john.doe@example.com' />
               </div>
               <div className='space-y-4 flex flex-col'>
                 <p>
-                  <span className='text-[#161C2D] font-bold text-[16px]'>Company</span>
+                  <span className='text-[#161C2D] font-semibold text-[16px]'>Company</span>
                 </p>
                 <div className="flex item-center">
-                <input type="text" className='border p-2 w-full rounded-xl text-[14px]' placeholder='i.e. john.doe@example.com' />
+                <input type="text" className='border p-2 w-full rounded-md text-[14px]'   onChange={(e) => setFirstName(e.target.value)} placeholder='i.e. john.doe@example.com' />
                 </div>
                 <div className='space-y-4 flex flex-col'>
                 <p>
-                  <span className='text-[#161C2D] font-bold text-[16px]'>End Date </span>
+                  <span className='text-[#161C2D] font-semibold text-[16px]'>End Date </span>
                 </p>
-                <input type="text" className='border p-2 rounded-xl text-[14px]' placeholder='i.e. john.doe@example.com' />
+                <input type="text" className='border p-2 rounded-md text-[14px]'   onChange={(e) => setFirstName(e.target.value)} placeholder='i.e. john.doe@example.com' />
               </div>
               </div>
             
             </div>
           </div>
+          
           <button className="py-[7px] px-[30px] rounded-md bg-[#3C3C51] text-white ">Add New Experience</button>
           
           <div className='flex justify-between mt-4 gap-4'>
@@ -302,9 +343,9 @@ const Page = () => {
             <div className='space-y-6 w-[48%]'>
               <div className='space-y-4 flex flex-col'>
                 <p>
-                  <span className='text-[#161C2D] font-bold text-[16px]'>Degree </span>
+                  <span className='text-[#161C2D] font-semibold text-[16px]'>Degree </span>
                 </p>
-                <input type="text" className='border p-2 rounded-xl text-[14px]' placeholder='i.e. john.doe@example.com' />
+                <input type="text" className='border p-2 rounded-md text-[14px]'   onChange={(e) => setFirstName(e.target.value)} placeholder='i.e. john.doe@example.com' />
               </div>
              
             </div>
@@ -312,9 +353,9 @@ const Page = () => {
             <div className='space-y-6 w-[48%]'>
               <div className='space-y-4 flex flex-col'>
                 <p>
-                  <span className='text-[#161C2D] font-bold text-[16px]'>Certification</span>
+                  <span className='text-[#161C2D] font-semibold text-[16px]'>Certification</span>
                 </p>
-                <input type="text" className='border p-2 rounded-xl text-[14px]' placeholder='i.e. john.doe@example.com' />
+                <input type="text" className='border p-2 rounded-md text-[14px]'   onChange={(e) => setFirstName(e.target.value)} placeholder='i.e. john.doe@example.com' />
               </div>
               <div className='space-y-4 flex flex-col'>
                
@@ -327,9 +368,9 @@ const Page = () => {
           </div>
           <div className='space-y-4 pl-[10%] flex flex-col'>
                 <p>
-                  <span className='text-[#161C2D]  font-bold text-[16px]'>Tranings </span>
+                  <span className='text-[#161C2D]  font-semibold text-[16px]'>Tranings </span>
                 </p>
-                <input type="text" className='border p-2 rounded-xl text-[14px]' placeholder='i.e. john.doe@example.com' />
+                <input type="text" className='border p-2 rounded-md text-[14px]'   onChange={(e) => setFirstName(e.target.value)} placeholder='i.e. john.doe@example.com' />
               </div>
           <button className="py-[7px] px-[30px] rounded-md bg-[#3C3C51] text-white ">Add New Qualifications</button>
           
@@ -341,21 +382,21 @@ const Page = () => {
 
     <div className="flex flex-col bg-[#F8F8F8] w-fit p-3 rounded-md">
    <p className="font-semibold">Skill 1</p>
-   <input type="text " className="w-[304px] border p-1 border-gray mt-1 rounded-md bg-transparent" placeholder="skill"/>
+   <input type="text " className="w-[304px] border p-1 border-gray mt-1 rounded-md bg-transparent"   onChange={(e) => setSkills(e.target.value)} placeholder="skill"/>
    <button className="py-[7px] px-8 mt-10 rounded-md w-fit  bg-[#3C3C51] text-white ">Add New Skill</button>
        
        </div>
 
        <div className="flex flex-col bg-[#F8F8F8] w-fit p-3 rounded-md">
    <p className="font-semibold">Portofolio 1</p>
-   <input type="text " className="w-[304px] border p-1 border-gray mt-1 rounded-md bg-transparent" placeholder="skill"/>
+   <input type="text " className="w-[304px] border p-1 border-gray mt-1 rounded-md bg-transparent"   onChange={(e) => setPortfolioLinks(e.target.value)} placeholder="skill"/>
    <button className="py-[7px] px-8 mt-10 rounded-md w-fit  bg-[#3C3C51] text-white ">Add New Portifolio</button>
        
        </div>
 
        <div className="flex flex-col bg-[#F8F8F8] w-fit p-3 rounded-md">
    <p className="font-semibold">Portifolio File 1</p>
-   <input type="file" className='border p-2 text-gray rounded-xl text-[14px]' placeholder='i.e. Inquiry' />
+   <input type="file" className='border p-2 text-gray rounded-md text-[14px]'   onChange={(e) => setPortfolioFiles(e.target.files)} placeholder='i.e. Inquiry' />
    <button className="py-[7px] px-8 mt-10 rounded-md w-fit  bg-[#3C3C51] text-white ">Add New Portifolio</button>
        
        </div>
@@ -372,13 +413,13 @@ const Page = () => {
    <div className="flex flex-col py-6 px-3 bg-[#F8F8F8] w-fit rounded-md">
    <p className="font-semibold">Shift time</p>
    <p className="text-[12px] font-light">start time</p>
-   <input type="time" className='border p-2 text-gray rounded-xl w-[240px] text-[14px]' placeholder='i.e. Inquiry' />
+   <input type="time" className='border p-2 text-gray rounded-md w-[240px] text-[14px]'   onChange={(e) => setAvailabilityHours(e.target.value)} placeholder='i.e. Inquiry' />
        
        </div>
        <div className="flex  flex-col bg-[#F8F8F8] w-fit py-6 px-3 rounded-md">
    <p className="font-semibold hidden">Shift time</p>
-   <p className="text-[12px] mt-6 font-light ">start time</p>
-   <input type="time" className='border p-2  text-gray rounded-xl w-[240px] text-[14px]' placeholder='i.e. Inquiry' />
+   <p className="text-[12px] mt-6 font-light ">End time</p>
+   <input type="time" className='border p-2  text-gray rounded-md w-[240px] text-[14px]'   onChange={(e) => setFirstName(e.target.value)} placeholder='i.e. Inquiry' />
        
        </div>
    </div>
@@ -408,13 +449,13 @@ const Page = () => {
    <div className="flex item-center w-full gap-6">
     <div className="w-1/2">
       <p>Hourly Rate</p>
-      <input type="text" className='border p-2 w-full rounded-xl text-[14px]' placeholder='i.e. john.doe@example.com' />
+      <input type="text" className='border p-2 w-full rounded-md text-[14px]'   onChange={(e) => setHourlyRate(e.target.value)} placeholder='i.e. john.doe@example.com' />
       
     </div>
 
     <div className="w-1/2">
       <p>Language </p>
-      <input type="text" className='border p-2 w-full rounded-xl text-[14px]' placeholder='i.e. john.doe@example.com' />
+      <input type="text" className='border p-2 w-full rounded-md text-[14px]'   onChange={(e) => setLanguages(e.target.value)} placeholder='i.e. john.doe@example.com' />
       
     </div>
    </div>
@@ -425,11 +466,10 @@ const Page = () => {
 
 
   <div className="flex item-center justify-center">
-    <Link href="">
-    <button className="bg-[#0097FF] text-white px-[30px] mt-[50px] py-[7px] rounded-md " >Save Profile</button>
-    </Link>
-  </div>
-
+    
+    <button  className="bg-[#0097FF] text-white px-[30px] mt-[50px] py-[7px] rounded-md " >Save Profile</button>
+      </div>
+  </form>
     </div>
   )
 }
