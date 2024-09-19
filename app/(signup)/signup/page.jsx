@@ -54,7 +54,7 @@ const Page = () => {
 
     console.log({
       userType,
-      email: formData.emailorphoneNumber,
+      emailOrPhoneNumber: formData.emailorphoneNumber,
       password: formData.password,
       confirmPassword: formData.confirmPassword,
     });
@@ -62,7 +62,7 @@ const Page = () => {
     try {
       const response = await axios.post("auth/signup", {
         userType,
-        email: formData.emailorphoneNumber,
+        emailOrPhoneNumber: formData.emailorphoneNumber,
         password: formData.password,
         confirmPassword: formData.confirmPassword,
       });

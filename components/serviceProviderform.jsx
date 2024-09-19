@@ -2,9 +2,9 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import axios from '@/api/axios'
+import axios from '@/api/axios';
 
-const ServiceProviderform = ({accestocken}) => {
+const ServiceProviderForm = ({ accestocken }) => {
   // State for form inputs
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -14,21 +14,25 @@ const ServiceProviderform = ({accestocken}) => {
   const [bio, setBio] = useState('');
   const [profilePicture, setProfilePicture] = useState(null);
   const [preferredContact, setPreferredContact] = useState('');
-  const [city, setCity] = useState('');
-  const [state, setState] = useState('');
-  const [country, setCountry] = useState('');
+  const [location, setLocation] = useState({ city: '', state: '', country: '' });
   const [serviceCategory, setServiceCategory] = useState('');
   const [serviceTitle, setServiceTitle] = useState('');
-  
-  const [experience, setExperience] = useState({
-    position: '',
-    years: '',
-    responsibilities: [''],
-    company: '',
-    startDate: '',
-    endDate: ''
-});
-const [qualifications, setQualifications] = useState([{ degree: '', certifications: [''], training: '' }]);
+  const [experience, setExperience] = useState([
+    { 
+      position: '', 
+      years: '', 
+      responsibilities: [''], 
+      company: '', 
+      startDate: '', 
+      endDate: '' 
+    }
+  ]);
+  const [qualifications, setqualifications] = useState({
+    degree: '',
+    education: '',
+    certifications: [''],
+    trainings: [''],
+  });
   const [skills, setSkills] = useState(['']);
   const [portfolioLinks, setPortfolioLinks] = useState(['']);
   const [portfolioFiles, setPortfolioFiles] = useState([]);
@@ -37,493 +41,890 @@ const [qualifications, setQualifications] = useState([{ degree: '', certificatio
   const [hourlyRate, setHourlyRate] = useState('');
   const [languages, setLanguages] = useState(['']);
 
-  const handleChange = (field, value) => {
-    setExperience(prev => ({ ...prev, [field]: value }));
-};
+  const daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
-const handleChanges = (field, value) => {
-  setQualifications(prev => ({ ...prev, [field]: value }));
-};
+  // Toggle availability day
+  const toggleDay = (day) => {
+    setAvailabilityDays(prev => prev.includes(day) ? prev.filter(d => d !== day) : [...prev, day]);
+  };
 
-const daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-
-const toggleDay = (day) => {
-    setAvailabilityDays(prev => {
-        if (prev.includes(day)) {
-            // Remove day if it's already selected
-            return prev.filter(d => d !== day);
-        } else {
-            // Add day if it's not selected
-            return [...prev, day];
-        }
-    });
-};
+  // Handle form submission
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    const data = {
-        firstName: firstName.toString(),
-      lastName,
-      email,
-      phoneNumber,
-      profession,
-      bio,
-      profilePicture,
-      preferredContactMethod: preferredContact,
-      location: { city, state, country },
-      serviceCategory,
-      serviceTitle,
-      experience,
-      qualifications,
-      skills,
-      portfolioLinks,
-      portfolioFiles,
-      availability: { days: availabilityDays, hours: availabilityHours },
-      hourlyRate,
-      languages,
-    };
-console.log(data);
-console.log(" got acces tocken named :" + accestocken )
+    // Prepare form data
+    const formData = new FormData();
+    formData.append('firstName', firstName);
+    formData.append('lastName', lastName);
+    formData.append('email', email);
+    formData.append('phoneNumber', phoneNumber);
+    formData.append('profession', profession);
+    formData.append('bio', bio);
+    if (profilePicture) {
+      formData.append('profilePicture', profilePicture);
+    }
+    formData.append('preferredContactMethod', preferredContact);
+    formData.append('location', JSON.stringify(location));
+    formData.append('serviceCategory', serviceCategory);
+    formData.append('serviceTitle', serviceTitle);
+    formData.append('experience', JSON.stringify(experience));
+    formData.append('qualifications', JSON.stringify(qualifications));
+    formData.append('skills', JSON.stringify(skills));
+    formData.append('portfolioLinks', JSON.stringify(portfolioLinks));
+    formData.append('availabilityDays', JSON.stringify(availabilityDays));
+    formData.append('availabilityHours', availabilityHours);
+    formData.append('hourlyRate', hourlyRate);
+    formData.append('languages', JSON.stringify(languages));
+
+    // Append portfolio files
+    portfolioFiles.forEach((file, index) => {
+      formData.append(`portfolioFiles`, file);
+    });
 
     try {
-      const response = await axios.patch('/auth/service-providers/profile/complete', 
-              {data}
-            , {
-                headers: {
-                  Authorization: `Bearer ${accestocken}`, // Add Bearer token here
-                }
-              });
+      const response = await axios.patch('/auth/service-providers/profile/complete', formData, {
+        headers: {
+          Authorization: `Bearer ${accestocken}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      });
 
-      if (response.ok) {
+      if (response.status === 200) {
         alert('Profile saved successfully!');
       } else {
         alert('Failed to save profile.');
       }
-
-     
-        
     } catch (error) {
       console.error('Error:', error.response);
       alert('An error occurred. Please try again.');
     }
   };
 
+  // Handlers for dynamic fields
+
+  // Skills
+  const handleAddSkill = () => {
+    setSkills([...skills, '']);
+  };
+
+  const handleSkillChange = (index, value) => {
+    const newSkills = [...skills];
+    newSkills[index] = value;
+    setSkills(newSkills);
+  };
+
+  // Languages
+  const handleAddLanguage = () => {
+    setLanguages([...languages, '']);
+  };
+
+  const handleLanguageChange = (index, value) => {
+    const newLanguages = [...languages];
+    newLanguages[index] = value;
+    setLanguages(newLanguages);
+  };
+
+  // Portfolio Links
+  const handleAddPortfolioLink = () => {
+    setPortfolioLinks([...portfolioLinks, '']);
+  };
+
+  const handlePortfolioLinkChange = (index, value) => {
+    const newLinks = [...portfolioLinks];
+    newLinks[index] = value;
+    setPortfolioLinks(newLinks);
+  };
+
+  // Portfolio Files
+  const handleAddPortfolioFile = () => {
+    setPortfolioFiles([...portfolioFiles, null]);
+  };
+
+  const handlePortfolioFileChange = (index, file) => {
+    const newFiles = [...portfolioFiles];
+    newFiles[index] = file;
+    setPortfolioFiles(newFiles);
+  };
+
+  // Experience
+  const handleAddExperience = () => {
+    setExperience([...experience, {
+      position: '', 
+      years: '', 
+      responsibilities: [''], 
+      company: '', 
+      startDate: '', 
+      endDate: '' 
+    }]);
+  };
+
+  const handleExperienceChange = (index, field, value) => {
+    const newExperience = [...experience];
+    newExperience[index][field] = value;
+    setExperience(newExperience);
+  };
+
+  const handleAddResponsibility = (expIndex) => {
+    const newExperience = [...experience];
+    newExperience[expIndex].responsibilities.push('');
+    setExperience(newExperience);
+  };
+
+  const handleResponsibilityChange = (expIndex, resIndex, value) => {
+    const newExperience = [...experience];
+    newExperience[expIndex].responsibilities[resIndex] = value;
+    setExperience(newExperience);
+  };
+
+  // qualifications
+  const handleAddqualifications = () => {
+    setqualifications([...qualifications, {
+      degree: '',
+      certifications: [''],
+      training: '',
+    }]);
+  };
+
+  const handlequalificationsChange = (index, field, value) => {
+    setqualifications(prev => {
+        const newQuals = [...prev];
+        newQuals[index][field] = value;
+        return newQuals;
+    });
+};
+
+const handleAddCertification = (index) => {
+    setqualifications(prev => {
+        const newQuals = [...prev];
+        newQuals[index].certifications.push(''); // Add new empty certification
+        return newQuals;
+    });
+};
+
+const handleCertificationChange = (qualIndex, certIndex, value) => {
+    setqualifications(prev => {
+        const newQuals = [...prev];
+        newQuals[qualIndex].certifications[certIndex] = value; // Update specific certification
+        return newQuals;
+    });
+};
+
+
+
+const handleDegreeInputChangeForqualifications = (e) => {
+  setqualifications(prev => ({
+    ...prev,
+    degree: e.target.value,
+  }));
+};
+
+// Unique and long handler for education change
+const handleEducationInputChangeForqualifications = (e) => {
+  setqualifications(prev => ({
+    ...prev,
+    education: e.target.value,
+  }));
+};
+
+// Unique and long handler for certification input change
+const handleCertificationInputChangeAtIndexForqualifications = (index) => (e) => {
+  const updatedCertifications = [...qualifications.certifications];
+  updatedCertifications[index] = e.target.value;
+  setqualifications(prev => ({
+    ...prev,
+    certifications: updatedCertifications,
+  }));
+};
+
+// Unique and long handler for adding a new certification field
+const handleAddNewCertificationFieldToqualifications = () => {
+  setqualifications(prev => ({
+    ...prev,
+    certifications: [...prev.certifications, ''],
+  }));
+};
+
+// Unique and long handler for training input change
+const handleTrainingInputChangeAtIndexForqualifications = (index) => (e) => {
+  const updatedTrainings = [...qualifications.trainings];
+  updatedTrainings[index] = e.target.value;
+  setqualifications(prev => ({
+    ...prev,
+    trainings: updatedTrainings,
+  }));
+};
+
+// Unique and long handler for adding a new training field
+const handleAddNewTrainingFieldToqualifications = () => {
+  setqualifications(prev => ({
+    ...prev,
+    trainings: [...prev.trainings, ''],
+  }));
+};
+
+const createDegreeChangeHandler = (index) => (e) => {
+  const updatedqualifications = [...qualifications];
+  updatedqualifications[index].degree = e.target.value;
+  setqualifications(updatedqualifications);
+};
+
+// Create a unique handler for certification change
+const createCertificationChangeHandler = (index, certIndex) => (e) => {
+  const updatedqualifications = [...qualifications];
+  updatedqualifications[index].certifications[certIndex] = e.target.value;
+  setqualifications(updatedqualifications);
+};
+
+// Add a new certification input field
+const addCertification = (index) => {
+  const updatedqualifications = [...qualifications];
+  updatedqualifications[index].certifications.push('');
+  setqualifications(updatedqualifications);
+};
+
+// Create a unique handler for training change
+const createTrainingChangeHandler = (index) => (e) => {
+  const updatedqualifications = [...qualifications];
+  updatedqualifications[index].training = e.target.value;
+  setqualifications(updatedqualifications);
+};
+
+// Function to ensure 'training' is either a string or an array of strings
+const processqualifications = (qualifications) => {
+  return qualifications.map(q => ({
+    ...q,
+    training: Array.isArray(q.training) ? q.training.join(', ') : q.training
+  }));
+};
+
+
+
+
+
+
+
+
+const handleAddTraining = (index) => {
+  setqualifications(prev => {
+      const newQuals = [...prev];
+
+      // Ensure that training is initialized as an array
+      if (!Array.isArray(newQuals[index].training)) {
+          newQuals[index].training = []; // Initialize if undefined
+      }
+
+      newQuals[index].training.push(''); // Add new empty training
+      return newQuals;
+  });
+};
+
+const handleTrainingChange = (qualIndex, trainIndex, value) => {
+    setqualifications(prev => {
+        const newQuals = [...prev];
+        newQuals[qualIndex].training[trainIndex] = value; // Update specific training
+        return newQuals;
+    });
+};
+
+
+
+const handleRemovequalifications = (index) => {
+    const newqualifications = qualifications.filter((_, i) => i !== index);
+    setqualifications(newqualifications);
+};
+
   return (
     <div>
-      <div>
-        <div className='flex justify-center mt-10 items-center max-w-6xl mx-auto'>
- <div className='size-[35px] flex justify-center items-center bg-[#FC9B00] rounded-full text-white font-semibold' >1</div>
-       <div className='w-[200px] border md:w-[290px] border-[#B2B2B5] '></div>
-       <div className='size-[35px] flex justify-center items-center bg-[#FC9B00] rounded-full text-white font-semibold' >2</div>
+      {/* Progress Indicators */}
+      <div className='flex justify-center mt-10 items-center max-w-6xl mx-auto'>
+        <div className='size-[35px] flex justify-center items-center bg-[#FC9B00] rounded-full text-white font-semibold'>1</div>
+        <div className='w-[200px] border md:w-[290px] border-[#B2B2B5]'></div>
+        <div className='size-[35px] flex justify-center items-center bg-[#FC9B00] rounded-full text-white font-semibold'>2</div>
+        <div className='w-[200px] border md:w-[290px] border-[#B2B2B5]'></div>
+        <div className='size-[35px] flex justify-center items-center border-[3px] border-[#FC9B00] rounded-full text-white font-semibold'></div>
+        <div className='w-[200px] border md:w-[290px] border-[#B2B2B5]'></div>
+        <div className='size-[35px] flex justify-center items-center border-[3px] border-[#FC9B00] rounded-full text-white font-semibold'></div>
+      </div>
 
-       <div className='w-[200px] border md:w-[290px] border-[#B2B2B5] '></div>
-       <div className='size-[35px] flex justify-center items-center  border-[3px] border-[#FC9B00] rounded-full text-white font-semibold' ></div>
-       <div className='w-[200px] border md:w-[290px] border-[#B2B2B5] '></div>
-       <div className='size-[35px] flex justify-center items-center  border-[3px] border-[#FC9B00] rounded-full text-white font-semibold' ></div>
-       
+      {/* Form */}
+      <form onSubmit={handleSubmit}>
+        {/* Form Title */}
+        <div className="flex items-center justify-center">
+          <p className="text-[22px] mt-5 font-semibold">Fill Profile</p>
         </div>
-      
-    </div>
-    <form  onSubmit={handleSubmit}>
-       
-   <div className="flex item-center justify-center">
-<p className="text-[22px] mt-5 font-semibold">Fill Profile</p>   </div>
 
-   <div className='max-w-6xl mx-auto mt-[50px]'>
-      <div className='flex flex-col'>
-      <div className='border p-9 rounded-md space-y-6'>     
-             <p className="text-[20px]">Personal information</p>
-          <div className='flex justify-between gap-4'>
-            <div className='space-y-6 w-[48%]'>
-              <div className='space-y-4 flex flex-col'>
-                <p>
-                  <span className='text-[#161C2D] font-semibold text-[16px]'>First Name</span>
-                </p>
-                <input type="text"  onChange={(e) => setFirstName(e.target.value)}  className='border p-2 rounded-md text-[14px]' placeholder='i.e. John Doe' />
-              </div>
-              <div className='space-y-4 flex flex-col'>
-                <p>
-                  <span className='text-[#161C2D] font-semibold text-[16px]'>Phone Number</span>
-                </p>
-                <input type="text"  onChange={(e) => setPhoneNumber(e.target.value)}  className='border p-2 rounded-md text-[14px]' placeholder='i.e. John Doe' />
-              </div>
-            
- 
-            </div>
-            <div className='space-y-6 w-[48%]'>
-              <div className='space-y-4 flex flex-col'>
-                <p>
-                  <span className='text-[#161C2D] font-semibold text-[16px]'>Last Name </span>
-                </p>
-                <input type="text" className='border p-2 rounded-md text-[14px]' placeholder='i.e. john.doe@example.com'    onChange={(e) => setLastName(e.target.value)}/>
-              </div>
-              <div className='space-y-4 flex flex-col'>
-                <p>
-                  <span className='text-[#161C2D] font-semibold text-[16px]'>Profession</span>
-                </p>
-                <input type="text"  onChange={(e) => setProfession(e.target.value)}  className='border p-2 rounded-md text-[14px]' placeholder='i.e. John Doe' />
-              </div>
-
-
-              
-            </div>
-
-            <div className='space-y-6 w-[48%]'>
-              <div className='space-y-4 flex flex-col'>
-                <p>
-                  <span className='text-[#161C2D] font-semibold text-[16px]'>Email Address </span>
-                </p>
-                <input type="text" className='border p-2 rounded-md text-[14px]'   onChange={(e) => setEmail(e.target.value)} placeholder='i.e. john.doe@example.com' />
-              </div>
-             
-
-              <div className='space-y-4 flex flex-col'>
-                <p>
-                  <span className='text-[#161C2D] font-semibold text-[16px]'>Prefered Contact Method</span>
-                </p>
-                <input type="text" className='border p-2 rounded-md text-[14px]'   onChange={(e) => setPreferredContact(e.target.value)} placeholder='i.e. Inquiry' />
-              </div>
-            
-
-              
-            
-            </div>
-          </div>
-
+        {/* Personal Information */}
+        <div className='max-w-6xl mx-auto mt-[50px]'>
           <div className='flex flex-col'>
-         
-        <div className='rounded-md space-y-6'>
-          <div className='flex items-center gap-4'>
-          <div className='space-y-4 flex flex-col'>
-                <p>
-                  <span className='text-[#161C2D] font-semibold text-[16px]'>profile Picture</span>
-                </p>
-                <div className="flex item-center">
-                   <img src="./user.png"  className="object-contain size-[50px] rounded-full mx-3" />
-                <input type="file" className='border p-2 text-gray rounded-md text-[14px]'   onChange={(e) => setProfilePicture(e.target.files)} placeholder='i.e. Inquiry' />
+            <div className='border p-9 rounded-md space-y-6'>
+              <p className="text-[20px]">Personal Information</p>
+              <div className='flex justify-between gap-4'>
+                {/* Left Column */}
+                <div className='space-y-6 w-[48%]'>
+                  <div className='space-y-4 flex flex-col'>
+                    <p className='text-[#161C2D] font-semibold text-[16px]'>First Name</p>
+                    <input
+                      type="text"
+                      onChange={(e) => setFirstName(e.target.value)}
+                      className='border p-2 rounded-md text-[14px]'
+                      placeholder='i.e. John'
+                      required
+                    />
+                  </div>
+                  <div className='space-y-4 flex flex-col'>
+                    <p className='text-[#161C2D] font-semibold text-[16px]'>Phone Number</p>
+                    <input
+                      type="tel"
+                      onChange={(e) => setPhoneNumber(e.target.value)}
+                      className='border p-2 rounded-md text-[14px]'
+                      placeholder='i.e. +1234567890'
+                      required
+                    />
+                  </div>
+                </div>
+
+                {/* Right Column */}
+                <div className='space-y-6 w-[48%]'>
+                  <div className='space-y-4 flex flex-col'>
+                    <p className='text-[#161C2D] font-semibold text-[16px]'>Last Name</p>
+                    <input
+                      type="text"
+                      onChange={(e) => setLastName(e.target.value)}
+                      className='border p-2 rounded-md text-[14px]'
+                      placeholder='i.e. Doe'
+                      required
+                    />
+                  </div>
+                  <div className='space-y-4 flex flex-col'>
+                    <p className='text-[#161C2D] font-semibold text-[16px]'>Profession</p>
+                    <input
+                      type="text"
+                      onChange={(e) => setProfession(e.target.value)}
+                      className='border p-2 rounded-md text-[14px]'
+                      placeholder='i.e. Electrician'
+                      required
+                    />
+                  </div>
+                </div>
+
+                {/* Email and Preferred Contact */}
+                <div className='space-y-6 w-[48%]'>
+                  <div className='space-y-4 flex flex-col'>
+                    <p className='text-[#161C2D] font-semibold text-[16px]'>Email Address</p>
+                    <input
+                      type="email"
+                      onChange={(e) => setEmail(e.target.value)}
+                      className='border p-2 rounded-md text-[14px]'
+                      placeholder='i.e. john.doe@example.com'
+                      required
+                    />
+                  </div>
+                  <div className='space-y-4 flex flex-col'>
+                    <p className='text-[#161C2D] font-semibold text-[16px]'>Preferred Contact Method</p>
+                    <input
+                      type="text"
+                      onChange={(e) => setPreferredContact(e.target.value)}
+                      className='border p-2 rounded-md text-[14px]'
+                      placeholder='i.e. Email or Phone'
+                      required
+                    />
+                  </div>
                 </div>
               </div>
-              <div className='space-y-4 flex flex-1 flex-col'>
-                <p>
-                  <span className='text-[#161C2D] font-semibold text-[16px]'>Bio </span>
-                </p>
-                <textarea type="text"    className='border px-2  rounded-md text-[14px]'   onChange={(e) => setBio(e.target.value)} placeholder='i.e. John Doe' />
+
+              {/* Profile Picture and Bio */}
+              <div className='flex flex-col'>
+                <div className='rounded-md space-y-6'>
+                  <div className='flex items-center gap-4'>
+                    {/* Profile Picture */}
+                    <div className='space-y-4 flex flex-col'>
+                      <p className='text-[#161C2D] font-semibold text-[16px]'>Profile Picture</p>
+                      <div className="flex items-center">
+                        <img src="./user.png" alt="User" className="object-contain w-12 h-12 rounded-full mx-3" />
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className='border p-2 text-gray rounded-md text-[14px]'
+                          onChange={(e) => setProfilePicture(e.target.files[0])}
+                        />
+                      </div>
+                    </div>
+
+                    {/* Bio */}
+                    <div className='space-y-4 flex flex-1 flex-col'>
+                      <p className='text-[#161C2D] font-semibold text-[16px]'>Bio</p>
+                      <textarea
+                        className='border px-2 rounded-md text-[14px] h-24'
+                        onChange={(e) => setBio(e.target.value)}
+                        placeholder='Tell us about yourself...'
+                        required
+                      />
+                    </div>
+                  </div>
+                </div>
               </div>
 
-          
-          </div>
-         
-        
-        </div>
-       
-      </div>
-          
-          <div className='flex flex-col'>
-            <p className='text-[18px] font-semibold pb-4'>Location</p>
-        <div className='rounded-md space-y-6'>
-          <div className='flex justify-between gap-4'>
-            <div className='space-y-6 w-[48%] '>
-              <div className='space-y-4 flex flex-col'>
-                <p>
-                  <span className='text-[#161C2D] font-semibold text-[16px]'>city </span>
-                </p>
-                <input type="text" className='border p-2 rounded-md text-[14px]'   onChange={(e) => setCity(e.target.value)} placeholder='city' />
+              {/* Location */}
+              <div className='flex flex-col'>
+                <p className='text-[18px] font-semibold pb-4'>Location</p>
+                <div className='rounded-md space-y-6'>
+                  <div className='flex justify-between gap-4'>
+                    <div className='space-y-4 flex flex-col w-[32%]'>
+                      <p className='text-[#161C2D] font-semibold text-[16px]'>City</p>
+                      <input
+                        type="text"
+                        value={location.city}
+                        onChange={(e) => setLocation(prev => ({ ...prev, city: e.target.value }))}
+                        className='border p-2 rounded-md text-[14px]'
+                        placeholder='i.e. Addis Ababa'
+                        required
+                      />
+                    </div>
+                    <div className='space-y-4 flex flex-col w-[32%]'>
+                      <p className='text-[#161C2D] font-semibold text-[16px]'>State</p>
+                      <input
+                        type="text"
+                        value={location.state}
+                        onChange={(e) => setLocation(prev => ({ ...prev, state: e.target.value }))}
+                        className='border p-2 rounded-md text-[14px]'
+                        placeholder='i.e. Addis Ababa'
+                        required
+                      />
+                    </div>
+                    <div className='space-y-4 flex flex-col w-[32%]'>
+                      <p className='text-[#161C2D] font-semibold text-[16px]'>Country</p>
+                      <input
+                        type="text"
+                        value={location.country}
+                        onChange={(e) => setLocation(prev => ({ ...prev, country: e.target.value }))}
+                        className='border p-2 rounded-md text-[14px]'
+                        placeholder='i.e. Ethiopia'
+                        required
+                      />
+                    </div>
+                  </div>
+                </div>
               </div>
-            
             </div>
-            <div className='space-y-6 w-[48%]'>
-              <div className='space-y-4 flex flex-col'>
-                <p>
-                  <span className='text-[#161C2D] font-semibold text-[16px]'>State <span className='text-[#747171]'> </span> </span>
-                </p>
-                <input type="text" className='border p-2 rounded-md text-[14px]'   onChange={(e) => setState(e.target.value)} placeholder='state' />
+
+            {/* More Information Section */}
+            <div className='border p-9 rounded-md space-y-6 mt-6'>
+              <p className="text-[20px]">More Information</p>
+
+              {/* Service Details */}
+              <div className='flex flex-col space-y-4'>
+                <div className="flex items-center gap-6">
+                  <div className="w-1/2 flex flex-col">
+                    <p className='text-[#161C2D] font-semibold text-[16px]'>Service Category</p>
+                    <input
+                      type="text"
+                      value={serviceCategory}
+                      onChange={(e) => setServiceCategory(e.target.value)}
+                      className='border p-2 rounded-md text-[14px]'
+                      placeholder='i.e. Plumbing'
+                      required
+                    />
+                  </div>
+                  <div className="w-1/2 flex flex-col">
+                    <p className='text-[#161C2D] font-semibold text-[16px]'>Service Title</p>
+                    <input
+                      type="text"
+                      value={serviceTitle}
+                      onChange={(e) => setServiceTitle(e.target.value)}
+                      className='border p-2 rounded-md text-[14px]'
+                      placeholder='i.e. Residential Plumbing'
+                      required
+                    />
+                  </div>
+                </div>
               </div>
-              
+
+              {/* Experience */}
+              <div className='space-y-6'>
+    <p className='text-[18px] font-semibold'>Experience</p>
+    {experience.map((exp, index) => (
+        <div key={index} className='border p-4 rounded-md space-y-4'>
+            <div className='flex justify-between items-center'>
+                <h4 className='font-semibold'>Experience {index + 1}</h4>
+                {experience.length > 1 && (
+                    <button
+                        type="button"
+                        onClick={() => {
+                            const newExperience = experience.filter((_, i) => i !== index);
+                            setExperience(newExperience);
+                        }}
+                        className="text-red-500"
+                    >
+                        Remove
+                    </button>
+                )}
             </div>
-            <div className='space-y-6 w-[48%]'>
-              <div className='space-y-4 flex flex-col'>
-                <p>
-                  <span className='text-[#161C2D] font-semibold text-[16px]'>Country <span className='text-[#747171]'></span> </span>
-                </p>
-                <input type="text" className='border p-2 rounded-md text-[14px]'   onChange={(e) => setCountry(e.target.value)} placeholder='country' />
-              </div>
-              
-            </div>
-          </div>
-         
-        
-        </div>
-       
-      </div>
-       
-        </div>
-       
-      </div>
-    </div>
-
-
-
-    <div className='max-w-6xl mx-auto mt-[50px]'>
-      <div className='flex flex-col'>
-        <div className='border p-9 rounded-md space-y-6'>
-          <p className="text-[20px]">More information</p>
-
-          <div className='flex flex-col'>
-          <div className="flex item-center w-full gap-6">
-    <div className="w-1/2">
-      <p>Service Catagory</p>
-      <input type="text" className='border p-2 w-full rounded-md text-[14px]'   onChange={(e) => setServiceCategory(e.target.value)} placeholder='i.e. john.doe@example.com' />
-      
-    </div>
-
-    <div className="w-1/2">
-      <p>Service Title </p>
-      <input type="text" className='border p-2 w-full rounded-md text-[14px]'   onChange={(e) => setServiceTitle(e.target.value)} placeholder='i.e. john.doe@example.com' />
-      
-    </div>
-   </div>
-        <div className='rounded-md space-y-6'>
-          <div className='flex justify-between gap-4'>
-          
-            
-            
-          </div>
-         
-        
-        </div>
-       
-      </div>
-      <div  className='flex justify-between gap-4'>
-            <div className='space-y-6 w-[10%]'>
-                <p>Experience 1</p>
-            </div>
-            <div className='space-y-6 w-[48%]'>
-                <div className='space-y-4 flex flex-col'>
-                    <p>
-                        <span className='text-[#161C2D] font-semibold text-[16px]'>Position</span>
-                    </p>
+            <div className='flex justify-between gap-4'>
+                <div className='flex flex-col w-[48%]'>
+                    <p className='text-[#161C2D] font-semibold text-[14px]'>Position</p>
                     <input
                         type="text"
+                        value={exp.position || ''}
+                        onChange={(e) => handleExperienceChange(index, 'position', e.target.value)}
                         className='border p-2 rounded-md text-[14px]'
-                        value={experience.position}
-                        onChange={(e) => handleChange('position', e.target.value)}
-                        placeholder='i.e. Software Engineer'
+                        placeholder='e.g., Senior Plumber'
+                        required
                     />
                 </div>
-                <div className='space-y-4 flex flex-col'>
-                    <p>
-                        <span className='text-[#161C2D] font-semibold text-[16px]'>Responsibility</span>
-                    </p>
+                <div className='flex flex-col w-[48%]'>
+                    <p className='text-[#161C2D] font-semibold text-[14px]'>Company</p>
                     <input
                         type="text"
+                        value={exp.company || ''}
+                        onChange={(e) => handleExperienceChange(index, 'company', e.target.value)}
                         className='border p-2 rounded-md text-[14px]'
-                        value={experience.responsibilities[0]} // Access the first element
-                        onChange={(e) => handleChange('responsibilities', [e.target.value])} // Update the array
-                        placeholder='i.e. Inquiry'
-                    />
-                </div>
-                <div className='space-y-4 flex flex-col'>
-                    <p>
-                        <span className='text-[#161C2D] font-semibold text-[16px]'>Start Date</span>
-                    </p>
-                    <input
-                        type="text"
-                        className='border p-2 rounded-md text-[14px]'
-                        value={experience.startDate}
-                        onChange={(e) => handleChange('startDate', e.target.value)}
-                        placeholder='i.e. 2022-01-01'
+                        placeholder='e.g., ABC Plumbing Co.'
+                        required
                     />
                 </div>
             </div>
-
-            <div className='space-y-6 w-[48%]'>
-                <div className='space-y-4 flex flex-col'>
-                    <p>
-                        <span className='text-[#161C2D] font-semibold text-[16px]'>Years of Experience</span>
-                    </p>
+            <div className='flex justify-between gap-4'>
+                <div className='flex flex-col w-[48%]'>
+                    <p className='text-[#161C2D] font-semibold text-[14px]'>Years of Experience</p>
                     <input
-                        type="text"
+                        type="text" // Change to text to ensure it's treated as a string
+                        value={exp.yearsOfExperience || ''}
+                        onChange={(e) => handleExperienceChange(index, 'yearsOfExperience', e.target.value)}
                         className='border p-2 rounded-md text-[14px]'
-                        value={experience.years}
-                        onChange={(e) => handleChange('years', e.target.value)}
-                        placeholder='i.e. 2'
+                        placeholder='e.g., 5'
+                        required
                     />
                 </div>
-                <div className='space-y-4 flex flex-col'>
-                    <p>
-                        <span className='text-[#161C2D] font-semibold text-[16px]'>Company</span>
-                    </p>
+                <div className='flex flex-col w-[48%]'>
+                    <p className='text-[#161C2D] font-semibold text-[14px]'>Start Date</p>
                     <input
-                        type="text"
+                        type="date"
+                        value={exp.startDate || ''}
+                        onChange={(e) => handleExperienceChange(index, 'startDate', e.target.value)}
                         className='border p-2 rounded-md text-[14px]'
-                        value={experience.company}
-                        onChange={(e) => handleChange('company', e.target.value)}
-                        placeholder='i.e. Company XYZ'
-                    />
-                </div>
-                <div className='space-y-4 flex flex-col'>
-                    <p>
-                        <span className='text-[#161C2D] font-semibold text-[16px]'>End Date</span>
-                    </p>
-                    <input
-                        type="text"
-                        className='border p-2 rounded-md text-[14px]'
-                        value={experience.endDate}
-                        onChange={(e) => handleChange('endDate', e.target.value)}
-                        placeholder='i.e. 2023-01-01'
+                        required
                     />
                 </div>
             </div>
-
-        </div>
-          <button className="py-[7px] px-[30px] rounded-md bg-[#3C3C51] text-white ">Add New Experience</button>
-          
-  
-        <div className='flex justify-between mt-4 gap-4'>
-            <div className='space-y-6 w-[12%]'>
-                <p>Qualification 1</p>
-            </div>
-            <div className='space-y-6 w-[48%]'>
-                <div className='space-y-4 flex flex-col'>
-                    <p>
-                        <span className='text-[#161C2D] font-semibold text-[16px]'>Degree</span>
-                    </p>
+            <div className='flex justify-between gap-4'>
+                <div className='flex flex-col w-[48%]'>
+                    <p className='text-[#161C2D] font-semibold text-[14px]'>End Date</p>
                     <input
-                        type="text"
+                        type="date"
+                        value={exp.endDate || ''}
+                        onChange={(e) => handleExperienceChange(index, 'endDate', e.target.value)}
                         className='border p-2 rounded-md text-[14px]'
-                        value={qualifications.degree}
-                        onChange={(e) => handleChanges('degree', e.target.value)}
-                        placeholder='i.e. Bachelor of Science'
+                        required
                     />
                 </div>
             </div>
-
-            <div className='space-y-6 w-[48%]'>
-                <div className='space-y-4 flex flex-col'>
-                    <p>
-                        <span className='text-[#161C2D] font-semibold text-[16px]'>Certification</span>
-                    </p>
+            {/* Responsibilities */}
+            <div className='flex flex-col'>
+                <p className='text-[#161C2D] font-semibold text-[14px]'>Responsibilities</p>
+                {exp.responsibilities.map((res, resIndex) => (
                     <input
+                        key={resIndex}
                         type="text"
-                        className='border p-2 rounded-md text-[14px]'
-                        value={qualifications.certifications} // Use empty string if undefined
-                        onChange={(e) => handleChanges('certifications', [e.target.value])}
-                        placeholder='i.e. Certified Java Developer'
+                        value={res || ''}
+                        onChange={(e) => handleResponsibilityChange(index, resIndex, e.target.value)}
+                        className='border p-2 rounded-md text-[14px] mb-2'
+                        placeholder='e.g., Install plumbing systems'
+                        required
                     />
-                </div>
-            </div>
-            
-            <div className='space-y-4 pl-[10%] flex flex-col'>
-                <p>
-                    <span className='text-[#161C2D] font-semibold text-[16px]'>Trainings</span>
-                </p>
-                <input
-                    type="text"
-                    className='border p-2 rounded-md text-[14px]'
-                    value={qualifications.training}
-                    onChange={(e) => handleChanges('training', e.target.value)}
-                    placeholder='i.e. Project Management Training'
-                />
-            </div>
-        </div>
-          <button className="py-[7px] px-[30px] rounded-md bg-[#3C3C51] text-white ">Add New Qualifications</button>
-          
-
-
-    
-
-  <div className="flex  flex-col md:flex-row item-center justify-center mx-auto  gap-6">
-
-    <div className="flex flex-col bg-[#F8F8F8] w-fit p-3 rounded-md">
-   <p className="font-semibold">Skill 1</p>
-   <input type="text " className="w-[304px] border p-1 border-gray mt-1 rounded-md bg-transparent"   onChange={(e) => setSkills(e.target.value)} placeholder="skill"/>
-   <button className="py-[7px] px-8 mt-10 rounded-md w-fit  bg-[#3C3C51] text-white ">Add New Skill</button>
-       
-       </div>
-
-       <div className="flex flex-col bg-[#F8F8F8] w-fit p-3 rounded-md">
-   <p className="font-semibold">Portofolio 1</p>
-   <input type="text " className="w-[304px] border p-1 border-gray mt-1 rounded-md bg-transparent"   onChange={(e) => setPortfolioLinks(e.target.value)} placeholder="skill"/>
-   <button className="py-[7px] px-8 mt-10 rounded-md w-fit  bg-[#3C3C51] text-white ">Add New Portifolio</button>
-       
-       </div>
-
-       <div className="flex flex-col bg-[#F8F8F8] w-fit p-3 rounded-md">
-   <p className="font-semibold">Portifolio File 1</p>
-   <input type="file" className='border p-2 text-gray rounded-md text-[14px]'   onChange={(e) => setPortfolioFiles(e.target.files)} placeholder='i.e. Inquiry' />
-   <button className="py-[7px] px-8 mt-10 rounded-md w-fit  bg-[#3C3C51] text-white ">Add New Portifolio</button>
-       
-       </div>
-  </div>
-     
-
-
-
-<div className="flex item-center gap-5">
-
-
-
-   <div className="flex item-center py-4 ">
-   <div className="flex flex-col py-6 px-3 bg-[#F8F8F8] w-fit rounded-md">
-   <p className="font-semibold">Shift time</p>
-   <p className="text-[12px] font-light">start time</p>
-   <input type="number" className='border p-2 text-gray rounded-md w-[240px] text-[14px]'   onChange={(e) => setAvailabilityHours(e.target.value)} placeholder='i.e 8' />
-       
-       </div>
-      
-   </div>
-
-
-
-
-   <div className="flex flex-col h-fit py-4 px-3 bg-[#F8F8F8] w-fit rounded-md">
-
-   <p>working Days</p>
-
-   <div className="flex item-center mt-3 flex-wrap gap-4">
-            {daysOfWeek.map(day => (
-                <p
-                    key={day}
-                    className={`border cursor-pointer rounded-md px-[27px] py-[10px] ${availabilityDays.includes(day) ? 'bg-blue-500 text-white' : ''}`}
-                    onClick={() => toggleDay(day)}
+                ))}
+                <button
+                    type="button"
+                    onClick={() => handleAddResponsibility(index)}
+                    className="py-1 px-3 bg-[#3C3C51] text-white rounded-md text-sm"
                 >
-                    {day}
-                </p>
-            ))}
+                    Add Responsibility
+                </button>
+            </div>
         </div>
-
+    ))}
+    <button
+        type="button"
+        onClick={handleAddExperience}
+        className="py-[7px] px-[30px] rounded-md bg-[#3C3C51] text-white "
+    >
+        Add New Experience
+    </button>
 </div>
-       </div>
 
-
-   <div className="flex item-center w-full gap-6">
-    <div className="w-1/2">
-      <p>Hourly Rate</p>
-      <input type="text" className='border p-2 w-full rounded-md text-[14px]'   onChange={(e) => setHourlyRate(e.target.value)} placeholder='i.e. john.doe@example.com' />
-      
+              {/* qualifications */}
+              <div className='space-y-6'>
+              <div>
+      <label>
+        Degree:
+        <input
+          type="text"
+          value={qualifications.degree}
+          onChange={handleDegreeInputChangeForqualifications}
+        />
+      </label>
+      <br />
+      <label>
+        Education:
+        <input
+          type="text"
+          value={qualifications.education}
+          onChange={handleEducationInputChangeForqualifications}
+        />
+      </label>
+      <br />
+      <div>
+        Certifications:
+        {qualifications.certifications.map((cert, index) => (
+          <div key={index}>
+            <input
+              type="text"
+              value={cert}
+              onChange={handleCertificationInputChangeAtIndexForqualifications(index)}
+            />
+          </div>
+        ))}
+        <button onClick={handleAddNewCertificationFieldToqualifications}>Add Certification</button>
+      </div>
+      <br />
+      <div>
+        Trainings:
+        {qualifications.trainings.map((training, index) => (
+          <div key={index}>
+            <input
+              type="text"
+              value={training}
+              onChange={handleTrainingInputChangeAtIndexForqualifications(index)}
+            />
+          </div>
+        ))}
+        <button onClick={handleAddNewTrainingFieldToqualifications}>Add Training</button>
+      </div>
     </div>
+    <button
+        type="button"
+        onClick={handleAddqualifications}
+        className="py-[7px] px-[30px] rounded-md bg-[#3C3C51] text-white "
+    >
+        Add New qualifications
+    </button>
+</div>
 
-    <div className="w-1/2">
-      <p>Language </p>
-      <input type="text" className='border p-2 w-full rounded-md text-[14px]'   onChange={(e) => setLanguages(e.target.value)} placeholder='i.e. john.doe@example.com' />
-      
-    </div>
-   </div>
+
+              {/* Skills */}
+              <div className='space-y-6'>
+                <p className='text-[18px] font-semibold'>Skills</p>
+                {skills.map((skill, index) => (
+                  <div key={index} className='flex items-center space-x-2'>
+                    <input
+                      type="text"
+                      value={skill}
+                      onChange={(e) => handleSkillChange(index, e.target.value)}
+                      className='border p-2 rounded-md text-[14px] flex-1'
+                      placeholder='e.g., Electrical Wiring'
+                      required
+                    />
+                    {skills.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const newSkills = skills.filter((_, i) => i !== index);
+                          setSkills(newSkills);
+                        }}
+                        className="text-red-500"
+                      >
+                        Remove
+                      </button>
+                    )}
+                  </div>
+                ))}
+                <button
+                  type="button"
+                  onClick={handleAddSkill}
+                  className="py-[7px] px-4 rounded-md bg-[#3C3C51] text-white "
+                >
+                  Add Skill
+                </button>
+              </div>
+
+              {/* Portfolio */}
+              <div className='space-y-6'>
+                <p className='text-[18px] font-semibold'>Portfolio</p>
+                {/* Portfolio Links */}
+                <div>
+                  <p className='text-[#161C2D] font-semibold text-[14px]'>Portfolio Links</p>
+                  {portfolioLinks.map((link, index) => (
+                    <div key={index} className='flex items-center space-x-2 mt-2'>
+                      <input
+                        type="url"
+                        value={link}
+                        onChange={(e) => handlePortfolioLinkChange(index, e.target.value)}
+                        className='border p-2 rounded-md text-[14px] flex-1'
+                        placeholder='e.g., https://portfolio.com/project1'
+                        required
+                      />
+                      {portfolioLinks.length > 1 && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const newLinks = portfolioLinks.filter((_, i) => i !== index);
+                            setPortfolioLinks(newLinks);
+                          }}
+                          className="text-red-500"
+                        >
+                          Remove
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                  <button
+                    type="button"
+                    onClick={handleAddPortfolioLink}
+                    className="py-[7px] px-4 rounded-md bg-[#3C3C51] text-white mt-2"
+                  >
+                    Add Portfolio Link
+                  </button>
+                </div>
+
+                {/* Portfolio Files */}
+                <div className='mt-4'>
+                  <p className='text-[#161C2D] font-semibold text-[14px]'>Portfolio Files</p>
+                  {portfolioFiles.map((file, index) => (
+                    <div key={index} className='flex items-center space-x-2 mt-2'>
+                      <input
+                        type="file"
+                        accept="image/*,application/pdf"
+                        onChange={(e) => handlePortfolioFileChange(index, e.target.files[0])}
+                        className='border p-2 rounded-md text-[14px] flex-1'
+                        required
+                      />
+                      {portfolioFiles.length > 1 && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const newFiles = portfolioFiles.filter((_, i) => i !== index);
+                            setPortfolioFiles(newFiles);
+                          }}
+                          className="text-red-500"
+                        >
+                          Remove
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                  <button
+                    type="button"
+                    onClick={handleAddPortfolioFile}
+                    className="py-[7px] px-4 rounded-md bg-[#3C3C51] text-white mt-2"
+                  >
+                    Add Portfolio File
+                  </button>
+                </div>
+              </div>
+
+              {/* Availability */}
+              <div className='space-y-6'>
+                <p className='text-[18px] font-semibold'>Availability</p>
+                <div className='rounded-md space-y-6'>
+                  <div className='flex items-center gap-4'>
+                    {/* Available Days */}
+                    <div className='space-y-4 flex flex-col w-[48%]'>
+                      <p className='text-[#161C2D] font-semibold text-[16px]'>Available Days</p>
+                      <div className='flex flex-wrap gap-2'>
+                        {daysOfWeek.map(day => (
+                          <button
+                            key={day}
+                            type="button"
+                            className={`border rounded-md px-4 py-2 ${availabilityDays.includes(day) ? 'bg-blue-500 text-white' : ''}`}
+                            onClick={() => toggleDay(day)}
+                          >
+                            {day}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Available Hours */}
+                    <div className='space-y-4 flex flex-col w-[48%]'>
+                      <p className='text-[#161C2D] font-semibold text-[16px]'>Available Hours</p>
+                      <input
+                        type="text"
+                        onChange={(e) => setAvailabilityHours(e.target.value)}
+                        className='border p-2 rounded-md text-[14px]'
+                        placeholder='e.g., 9am-5pm'
+                        required
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Hourly Rate and Languages */}
+              <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+                {/* Hourly Rate */}
+                <div className="flex flex-col w-full md:w-1/2">
+                  <p className='text-[#161C2D] font-semibold text-[16px]'>Hourly Rate</p>
+                  <input
+                    type="number"
+                    value={hourlyRate}
+                    onChange={(e) => setHourlyRate(e.target.value)}
+                    className='border p-2 rounded-md text-[14px]'
+                    placeholder='e.g., 50'
+                    required
+                  />
+                </div>
+
+                {/* Languages */}
+                <div className="flex flex-col w-full md:w-1/2">
+                  <p className='text-[#161C2D] font-semibold text-[16px]'>Languages</p>
+                  {languages.map((lang, index) => (
+                    <div key={index} className='flex items-center space-x-2 mt-2'>
+                      <input
+                        type="text"
+                        value={lang}
+                        onChange={(e) => handleLanguageChange(index, e.target.value)}
+                        className='border p-2 rounded-md text-[14px] flex-1'
+                        placeholder='e.g., English'
+                        required
+                      />
+                      {languages.length > 1 && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const newLanguages = languages.filter((_, i) => i !== index);
+                            setLanguages(newLanguages);
+                          }}
+                          className="text-red-500"
+                        >
+                          Remove
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                  <button
+                    type="button"
+                    onClick={handleAddLanguage}
+                    className="py-[7px] px-4 rounded-md bg-[#3C3C51] text-white mt-2"
+                  >
+                    Add Language
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-       
-      </div>
+
+        {/* Submit Button */}
+        <div className="flex items-center justify-center">
+          <button
+            type="submit"
+            className="bg-[#0097FF] text-white px-[30px] mt-[50px] py-[7px] rounded-md"
+          >
+            Save Profile
+          </button>
+        </div>
+      </form>
     </div>
+  );
+};
 
-
-  <div className="flex item-center justify-center">
-    
-    <button  className="bg-[#0097FF] text-white px-[30px] mt-[50px] py-[7px] rounded-md " >Save Profile</button>
-      </div>
-  </form>
-    </div>
-  )
-}
-
-export default ServiceProviderform
-
-
+export default ServiceProviderForm;
