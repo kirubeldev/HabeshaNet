@@ -19,11 +19,14 @@ const Nav = () => {
                 </ul>
             </nav>
         </div>
-        <div>
+        <div className='flex gap-5 items-center'>
             <Link  href={"/create"}>
             <button className='py-[10px] rounded-lg px-[30px] text-white bg-[#0097FF]'>
-                Get Started
+              Signup
             </button></Link>
+            <Link  href={"/signin"}>
+            <button className='py-[10px] rounded-lg px-[30px] text-white bg-[#b47aaf]'>
+Signin            </button></Link>
         </div>
       </div>
     </div>

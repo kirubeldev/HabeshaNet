@@ -1,12 +1,9 @@
-"use client";
-import AppleandGoogle from '@/components/appleandGoogle';
-import Progressbar from '@/components/Progressbar';
-import Link from 'next/link';
+'use client'
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import React, { useState, useEffect } from 'react';
-import axios  from '@/api/axios';
-import { useSearchParams } from 'next/navigation'
-
+import { useSearchParams } from 'next/navigation';
+import axios from '@/api/axios';
+import Link from 'next/link';
 
 const Page = () => {
   const [formData, setFormData] = useState({
@@ -14,15 +11,13 @@ const Page = () => {
     password: '',
     confirmPassword: '',
   });
-  const searchParams = useSearchParams()
- 
-  const userType = searchParams.get('userType')
-  const router = useRouter();
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
- 
 
+  const searchParams = useSearchParams();
+  const userType = searchParams.get('userType');
+  const router = useRouter();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -52,13 +47,6 @@ const Page = () => {
 
     setErrors({});
 
-    console.log({
-      userType,
-      emailOrPhoneNumber: formData.emailorphoneNumber,
-      password: formData.password,
-      confirmPassword: formData.confirmPassword,
-    });
-
     try {
       const response = await axios.post("auth/signup", {
         userType,
@@ -67,25 +55,18 @@ const Page = () => {
         confirmPassword: formData.confirmPassword,
       });
 
-      console.log('Form submitted successfully', response);
-
       if (response.status === 201) {
         router.push("/Verification");
       }
     } catch (err) {
-      if (err) {
-        console.error('Error submitting form:', err.response?.data || err.message);
-        setErrors({ submit: 'Failed to create account. Please try again later.' });
-      } else {
-        console.error('Unexpected error:', err);
-        setErrors({ submit: 'An unexpected error occurred. Please try again later.' });
-      }
+      setErrors({ submit: 'Failed to create account. Please try again later.' });
     }
   };
 
   return (
     <div>
       <div className='flex justify-center mt-10 items-center max-w-6xl mx-auto'>
+        {/* Progress indicator */}
         <div className='size-[35px] flex justify-center items-center bg-[#FC9B00] rounded-full text-white font-bold'>1</div>
         <div className='w-[200px] border md:w-[290px] border-[#B2B2B5]'></div>
         <div className='size-[35px] flex justify-center items-center border-[3px] border-[#FC9B00] rounded-full text-white font-bold'></div>
@@ -101,6 +82,7 @@ const Page = () => {
             <p>Sign Up as {userType ? userType.replace(/([A-Z])/g, ' $1') : 'User'}</p>
           </div>
           <form className='space-y-4' onSubmit={handleSubmit}>
+            {/* Email / Phone Number */}
             <div>
               <p className='text-[#161C2D] font-bold text-[16px] mt-4'>Email / Phone number</p>
               <input
@@ -115,6 +97,7 @@ const Page = () => {
               {errors.emailorphoneNumber && <p className='text-red-500'>{errors.emailorphoneNumber}</p>}
             </div>
 
+            {/* Password */}
             <div>
               <p className='text-[#161C2D] font-bold text-[16px] mt-4'>Password</p>
               <div className="flex items-center p-2 border rounded-xl">
@@ -128,15 +111,16 @@ const Page = () => {
                   aria-label="Password"
                 />
                 <img 
-                  src="./eye.png" 
-                  className={`object-cover size-[20px] cursor-pointer transition-transform ${showPassword ? 'rotate-180' : ''}`} 
-                  onClick={() => setShowPassword(!showPassword)} 
+                  src={showPassword ? "/openeye.png" : "/eye.png"} 
+                  className="object-contain size-[15px] cursor-pointer transition-transform"
+                  onClick={() => setShowPassword(!showPassword)}
                   alt={showPassword ? "Hide password" : "Show password"}
                 />
               </div>
               {errors.password && <p className='text-red-500'>{errors.password}</p>}
             </div>
 
+            {/* Confirm Password */}
             <div>
               <p className='text-[#161C2D] font-bold text-[16px] mt-4'>Confirm Password</p>
               <div className="flex items-center p-2 border rounded-xl">
@@ -150,9 +134,9 @@ const Page = () => {
                   aria-label="Confirm Password"
                 />
                 <img 
-                  src="./eye.png" 
-                  className={`object-cover size-[20px] cursor-pointer transition-transform ${showConfirmPassword ? 'rotate-180' : ''}`} 
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)} 
+                  src={showConfirmPassword ? "/openeye.png" : "/eye.png"} 
+                  className="object-contain size-[15px] cursor-pointer transition-transform"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   alt={showConfirmPassword ? "Hide confirm password" : "Show confirm password"}
                 />
               </div>
@@ -165,6 +149,11 @@ const Page = () => {
               <button type="submit" className="bg-[#0097FF] mt-[40px] rounded-md text-white py-[7px] px-[30px]">
                 Create Account
               </button>
+            </div>
+
+            <div className='flex gap-2 text-[14px] mt-2 items-center justify-end '>
+              <p>Already Have An account?</p>
+              <Link className='text-blue-500' href="/signin"> Login</Link>
             </div>
           </form>
         </div>

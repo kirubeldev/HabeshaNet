@@ -35,6 +35,7 @@ const Page = () => {
     e.preventDefault();
     setLoading(true); // Set loading state
     try {
+      // Validate form data
       SignupSchema.parse(formData);
       setErrors({});
 
@@ -52,14 +53,19 @@ const Page = () => {
       }
     } catch (err) {
       if (err instanceof z.ZodError) {
+        // Capture and display validation errors
         const fieldErrors = {};
         err.errors.forEach((error) => {
           fieldErrors[error.path[0]] = error.message;
         });
         setErrors(fieldErrors);
-      } else if (err) {
-        console.error('Error submitting form:', err.response?.data || err.message);
-        setErrors({ submit: 'Failed to. Please try again later.' + Response.message });
+      } else if (err.response) {
+        // Handle other errors (e.g., server errors)
+        console.error('Error submitting form:', err.response.data || err.message);
+        setErrors({ submit: 'Failed to sign in. Please try again later.' });
+      } else {
+        console.error('Unexpected error:', err);
+        setErrors({ submit: 'An unexpected error occurred. Please try again later.' });
       }
     } finally {
       setLoading(false); // Reset loading state
@@ -112,8 +118,8 @@ const Page = () => {
                   aria-label="Password"
                 />
                 <img 
-                  src="./eye.png" 
-                  className={`object-cover size-[20px] cursor-pointer transition-transform ${showPassword ? 'rotate-180' : ''}`} 
+                  src={showPassword ? "./openeye.png" : "./eye.png"} 
+                  className={`object-contain size-[15px] cursor-pointer transition-transform`} 
                   onClick={() => setShowPassword(!showPassword)} 
                   alt={showPassword ? "Hide password" : "Show password"}
                 />
@@ -131,6 +137,10 @@ const Page = () => {
               >
                 {loading ? 'Signing In...' : 'Sign In'}
               </button>
+            </div>
+            <div className='flex gap-2 text-[14px] mt-2 items-center justify-end '>
+              <p>Doesen't Have An account?</p>
+              <Link className='text-blue-500' href="/create"> Signup</Link>
             </div>
           </form>
         </div>
