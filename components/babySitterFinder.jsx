@@ -10,36 +10,35 @@ const BabySitterFinder = ({ accestocken }) => {
     const [bio, setBio] = useState('');
     const [profilePicture, setProfilePicture] = useState(null);
     const [preferredContact, setPreferredContact] = useState('');
-    const [city, setCity] = useState('');
-    const [state, setState] = useState('');
-    const [country, setCountry] = useState('');
+    const [location, setLocation] = useState({
+        city: '',
+        state: '',
+        country: ''
+    });
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         const data = {
-            firstName: firstName.toString(),
+            firstName,
             lastName,
             email,
             phoneNumber,
             bio,
             profilePicture,
             preferredContactMethod: preferredContact,
-            location: { city, state, country },
+            location, // Pass location as an object
         };
 
         console.log(data);
-        console.log("Got access token named: " + accestocken);
+        console.log("Got access token for baby sitter named: " + accestocken);
 
         try {
-            const response = await axios.patch('/auth/baby-sitter-finder/profile/complete', 
-                data, // No need for an additional { data }
-                {
-                    headers: {
-                        Authorization: `Bearer ${accestocken}`, // Add Bearer token here
-                    }
+            const response = await axios.patch('/auth/baby-sitter-finder/profile/complete', data, {
+                headers: {
+                    Authorization: `Bearer ${accestocken}`, // Add Bearer token here
                 }
-            );
+            });
 
             if (response.status === 200) {
                 alert('Profile saved successfully!');
@@ -72,7 +71,7 @@ const BabySitterFinder = ({ accestocken }) => {
                 <div className='max-w-6xl mx-auto mt-[50px]'>
                     <div className='flex flex-col'>
                         <div className='border p-9 rounded-md space-y-6'>
-                            <p className="text-[20px]">Personal information</p>
+                            <p className="text-[20px]">Personal Information</p>
                             <div className='flex justify-between gap-4'>
                                 <div className='space-y-6 w-[48%]'>
                                     <div className='space-y-4 flex flex-col'>
@@ -99,7 +98,7 @@ const BabySitterFinder = ({ accestocken }) => {
                                         <p>
                                             <span className='text-[#161C2D] font-semibold text-[16px]'>Email Address</span>
                                         </p>
-                                        <input type="text" className='border p-2 rounded-md text-[14px]' onChange={(e) => setEmail(e.target.value)} placeholder='i.e. john.doe@example.com' />
+                                        <input type="email" className='border p-2 rounded-md text-[14px]' onChange={(e) => setEmail(e.target.value)} placeholder='i.e. john.doe@example.com' />
                                     </div>
                                     <div className='space-y-4 flex flex-col'>
                                         <p>
@@ -141,7 +140,12 @@ const BabySitterFinder = ({ accestocken }) => {
                                                 <p>
                                                     <span className='text-[#161C2D] font-semibold text-[16px]'>City</span>
                                                 </p>
-                                                <input type="text" className='border p-2 rounded-md text-[14px]' onChange={(e) => setCity(e.target.value)} placeholder='City' />
+                                                <input
+                                                    type="text"
+                                                    className='border p-2 rounded-md text-[14px]'
+                                                    onChange={(e) => setLocation(prev => ({ ...prev, city: e.target.value }))}
+                                                    placeholder='City'
+                                                />
                                             </div>
                                         </div>
                                         <div className='space-y-6 w-[48%]'>
@@ -149,7 +153,12 @@ const BabySitterFinder = ({ accestocken }) => {
                                                 <p>
                                                     <span className='text-[#161C2D] font-semibold text-[16px]'>State</span>
                                                 </p>
-                                                <input type="text" className='border p-2 rounded-md text-[14px]' onChange={(e) => setState(e.target.value)} placeholder='State' />
+                                                <input
+                                                    type="text"
+                                                    className='border p-2 rounded-md text-[14px]'
+                                                    onChange={(e) => setLocation(prev => ({ ...prev, state: e.target.value }))}
+                                                    placeholder='State'
+                                                />
                                             </div>
                                         </div>
                                         <div className='space-y-6 w-[48%]'>
@@ -157,7 +166,12 @@ const BabySitterFinder = ({ accestocken }) => {
                                                 <p>
                                                     <span className='text-[#161C2D] font-semibold text-[16px]'>Country</span>
                                                 </p>
-                                                <input type="text" className='border p-2 rounded-md text-[14px]' onChange={(e) => setCountry(e.target.value)} placeholder='Country' />
+                                                <input
+                                                    type="text"
+                                                    className='border p-2 rounded-md text-[14px]'
+                                                    onChange={(e) => setLocation(prev => ({ ...prev, country: e.target.value }))}
+                                                    placeholder='Country'
+                                                />
                                             </div>
                                         </div>
                                     </div>
