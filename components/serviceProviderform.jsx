@@ -89,14 +89,18 @@ const ServiceProviderForm = ({ accestocken }) => {
         },
       });
 
-      if (response.status === 200) {
+      if (response.status === 201) {
         alert('Profile saved successfully!');
+        console.log(response.data);
+        
       } else {
         alert('Failed to save profile.');
       }
     } catch (error) {
-      console.error('Error:', error.response);
+      console.error('Error:', error);
       alert('An error occurred. Please try again.');
+      // console.log(response.data);
+      
     }
   };
 
@@ -178,36 +182,12 @@ const ServiceProviderForm = ({ accestocken }) => {
 
   // qualifications
   const handleAddqualifications = () => {
-    setqualifications([...qualifications, {
-      degree: '',
-      certifications: [''],
-      training: '',
-    }]);
+    // Assuming you want to add a new set of qualifications
+    setqualifications(prev => ({
+      ...prev,
+      // Add new qualification logic here
+    }));
   };
-
-  const handlequalificationsChange = (index, field, value) => {
-    setqualifications(prev => {
-        const newQuals = [...prev];
-        newQuals[index][field] = value;
-        return newQuals;
-    });
-};
-
-const handleAddCertification = (index) => {
-    setqualifications(prev => {
-        const newQuals = [...prev];
-        newQuals[index].certifications.push(''); // Add new empty certification
-        return newQuals;
-    });
-};
-
-const handleCertificationChange = (qualIndex, certIndex, value) => {
-    setqualifications(prev => {
-        const newQuals = [...prev];
-        newQuals[qualIndex].certifications[certIndex] = value; // Update specific certification
-        return newQuals;
-    });
-};
 
 
 
@@ -262,40 +242,6 @@ const handleAddNewTrainingFieldToqualifications = () => {
   }));
 };
 
-const createDegreeChangeHandler = (index) => (e) => {
-  const updatedqualifications = [...qualifications];
-  updatedqualifications[index].degree = e.target.value;
-  setqualifications(updatedqualifications);
-};
-
-// Create a unique handler for certification change
-const createCertificationChangeHandler = (index, certIndex) => (e) => {
-  const updatedqualifications = [...qualifications];
-  updatedqualifications[index].certifications[certIndex] = e.target.value;
-  setqualifications(updatedqualifications);
-};
-
-// Add a new certification input field
-const addCertification = (index) => {
-  const updatedqualifications = [...qualifications];
-  updatedqualifications[index].certifications.push('');
-  setqualifications(updatedqualifications);
-};
-
-// Create a unique handler for training change
-const createTrainingChangeHandler = (index) => (e) => {
-  const updatedqualifications = [...qualifications];
-  updatedqualifications[index].training = e.target.value;
-  setqualifications(updatedqualifications);
-};
-
-// Function to ensure 'training' is either a string or an array of strings
-const processqualifications = (qualifications) => {
-  return qualifications.map(q => ({
-    ...q,
-    training: Array.isArray(q.training) ? q.training.join(', ') : q.training
-  }));
-};
 
 
 
@@ -304,34 +250,11 @@ const processqualifications = (qualifications) => {
 
 
 
-const handleAddTraining = (index) => {
-  setqualifications(prev => {
-      const newQuals = [...prev];
-
-      // Ensure that training is initialized as an array
-      if (!Array.isArray(newQuals[index].training)) {
-          newQuals[index].training = []; // Initialize if undefined
-      }
-
-      newQuals[index].training.push(''); // Add new empty training
-      return newQuals;
-  });
-};
-
-const handleTrainingChange = (qualIndex, trainIndex, value) => {
-    setqualifications(prev => {
-        const newQuals = [...prev];
-        newQuals[qualIndex].training[trainIndex] = value; // Update specific training
-        return newQuals;
-    });
-};
 
 
 
-const handleRemovequalifications = (index) => {
-    const newqualifications = qualifications.filter((_, i) => i !== index);
-    setqualifications(newqualifications);
-};
+
+
 
   return (
     <div>
@@ -635,7 +558,7 @@ const handleRemovequalifications = (index) => {
                 <button
                     type="button"
                     onClick={() => handleAddResponsibility(index)}
-                    className="py-1 px-3 bg-[#3C3C51] text-white rounded-md text-sm"
+                    className="py-2 px-8 w-fit bg-[#3C3C51] text-white rounded-md text-base"
                 >
                     Add Responsibility
                 </button>
@@ -652,63 +575,83 @@ const handleRemovequalifications = (index) => {
 </div>
 
               {/* qualifications */}
-              <div className='space-y-6'>
-              <div>
-      <label>
-        Degree:
-        <input
-          type="text"
-          value={qualifications.degree}
-          onChange={handleDegreeInputChangeForqualifications}
-        />
-      </label>
-      <br />
-      <label>
-        Education:
-        <input
-          type="text"
-          value={qualifications.education}
-          onChange={handleEducationInputChangeForqualifications}
-        />
-      </label>
-      <br />
-      <div>
-        Certifications:
-        {qualifications.certifications.map((cert, index) => (
-          <div key={index}>
+              <div className="space-y-6 p-6  rounded-lg shadow-md">
+      <div className="space-y-4">
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
+            Degree:
             <input
               type="text"
-              value={cert}
-              onChange={handleCertificationInputChangeAtIndexForqualifications(index)}
+              value={qualifications.degree}
+              onChange={handleDegreeInputChangeForqualifications}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             />
-          </div>
-        ))}
-        <button onClick={handleAddNewCertificationFieldToqualifications}>Add Certification</button>
-      </div>
-      <br />
-      <div>
-        Trainings:
-        {qualifications.trainings.map((training, index) => (
-          <div key={index}>
+          </label>
+        </div>
+        
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
+            Education:
             <input
               type="text"
-              value={training}
-              onChange={handleTrainingInputChangeAtIndexForqualifications(index)}
+              value={qualifications.education}
+              onChange={handleEducationInputChangeForqualifications}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             />
-          </div>
-        ))}
-        <button onClick={handleAddNewTrainingFieldToqualifications}>Add Training</button>
+          </label>
+        </div>
+        
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Certifications:</label>
+          {qualifications.certifications.map((cert, index) => (
+            <div key={index} className="flex items-center space-x-2 mb-2">
+              <input
+                type="text"
+                value={cert}
+                onChange={handleCertificationInputChangeAtIndexForqualifications(index)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              />
+            </div>
+          ))}
+          <button
+            type="button"
+            onClick={handleAddNewCertificationFieldToqualifications}
+            className="inline-flex items-center px-4 py-2 bg-[#3C3C51] text-white font-medium rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          >
+            Add Certification
+          </button>
+        </div>
+        
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Trainings:</label>
+          {qualifications.trainings.map((training, index) => (
+            <div key={index} className="flex items-center space-x-2 mb-2">
+              <input
+                type="text"
+                value={training}
+                onChange={handleTrainingInputChangeAtIndexForqualifications(index)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              />
+            </div>
+          ))}
+          <button
+            type="button"
+            onClick={handleAddNewTrainingFieldToqualifications}
+            className="inline-flex items-center px-4 py-2 bg-[#3C3C51] text-white font-medium rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          >
+            Add Training
+          </button>
+        </div>
       </div>
-    </div>
-    <button
+      
+      <button
         type="button"
         onClick={handleAddqualifications}
-        className="py-[7px] px-[30px] rounded-md bg-[#3C3C51] text-white "
-    >
-        Add New qualifications
-    </button>
-</div>
-
+        className="py-2 px-6 bg-gray-800 text-white font-medium rounded-md shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+      >
+        Add New Qualifications
+      </button>
+    </div>
 
               {/* Skills */}
               <div className='space-y-6'>
