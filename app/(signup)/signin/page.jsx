@@ -35,95 +35,77 @@ const Page = () => {
     e.preventDefault();
     setLoading(true); // Set loading state
     try {
-      // Validate form data
-      SignupSchema.parse(formData);
-      setErrors({});
+        // Validate form data
+        SignupSchema.parse(formData);
+        setErrors({});
 
-      // Send the data to the server
-      const response = await axios.post("/auth/signin", {
-        emailOrPhone: formData.emailorphoneNumber,
-        password: formData.password,
-      });
+        // Send the data to the server
+        const response = await axios.post("/auth/signin", {
+            emailOrPhone: formData.emailorphoneNumber,
+            password: formData.password,
+        });
 
-      console.log('Form submitted successfully', response.data);
-      console.log(response.data.userType);
-     
-      if(!response.data.isProfileCompleted && response.data.userType === 'employer'){
-        router.push("/employerform");
-  
-      }else if(response.data.isProfileCompleted && response.data.userType === 'employer'){
-        router.push("/employer");
+        console.log('Form submitted successfully', response.data);
 
-      }
-
-
-      if(!response.data.isProfileCompleted && response.data.userType === 'serviceProvider'){
-        router.push("/serviceprovider");
-  
-      }else if(response.data.isProfileCompleted && response.data.userType === 'serviceProvider'){
-        router.push("/about");
-
-      }
-
-
-
-      if(!response.data.isProfileCompleted && response.data.userType === 'propertyOwner'){
-        router.push("/propertyowner");
-  
-      }else if(response.data.isProfileCompleted && response.data.userType === 'propertyOwner'){
-        router.push("/about");
-
-      }
-
-
-      if(!response.data.isProfileCompleted && response.data.userType === 'propertyRenter'){
-        router.push("/renter");
-  
-      }else if(response.data.isProfileCompleted && response.data.userType === 'propertyRenter'){
-        router.push("/about");
-
-      }
-
-
-
-      if(!response.data.isProfileCompleted && response.data.userType === 'babySitterFinder'){
-        router.push("/babysitterfinder");
-  
-      }else if(response.data.isProfileCompleted && response.data.userType === 'babySitterFinder'){
-        router.push("/about");
-
-      }
-
-
-
+        // Handle navigation based on response
+        if (!response.data.isProfileCompleted) {
+            switch (response.data.userType) {
+                case 'employer':
+                    router.push("/employerform");
+                    break;
+                case 'serviceProvider':
+                    router.push("/serviceprovider");
+                    break;
+                case 'propertyOwner':
+                    router.push("/propertyowner");
+                    break;
+                case 'propertyRenter':
+                    router.push("/renter");
+                    break;
+                case 'babySitterFinder':
+                    router.push("/babysitterfinder");
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            router.push("/employer");
+        }
 
     } catch (err) {
-      if (err instanceof z.ZodError) {
-        // Capture and display validation errors
-        const fieldErrors = {};
-        err.errors.forEach((error) => {
-          fieldErrors[error.path[0]] = error.message;
-        });
-        setErrors(fieldErrors);
-      } else if (err.response) {
-        // Handle other errors (e.g., server errors)
-        console.error('Error submitting form:', err.response.data || err.message);
-        setErrors({ submit: 'Failed to sign in. Please try again later.' });
-      } else {
-        console.error('Unexpected error:', err);
-        setErrors({ submit: 'An unexpected error occurred. Please try again later.' });
-      }
+        if (err instanceof z.ZodError) {
+            // Capture and display validation errors
+            const fieldErrors = {};
+            err.errors.forEach((error) => {
+                fieldErrors[error.path[0]] = error.message;
+            });
+            setErrors(fieldErrors);
+        } else if (err.response) {
+            // Set error message from the server response
+            setErrors({ submit: err.response.data.message || 'Failed to sign in. Please try again later.' });
+        } else {
+            console.error('Unexpected error:', err);
+            setErrors({ submit: 'An unexpected error occurred. Please try again later.' });
+        }
     } finally {
-      setLoading(false); // Reset loading state
+        setLoading(false); // Reset loading state
     }
-  };
+};
+
+
+
+  
+
+
 
   return (
 <div className=' bg-[#ECF1F4] pt-[53px]'>
-<div className='max-w-6xl mx-auto'>
-<div>
+<div className='max-w-6xl mx-auto flex justify-between items-center'>
+
            <Link href={"/"}><h1  className='text-[#161C2D] font-bold text-[20px]' >HabeshaNets.com</h1></Link> 
-        </div>
+           <Link href={"/create"}><h1  className='text-[#B53CC9] underline  text-12px]' >Want to change type?</h1></Link> 
+
+
 </div>
 
     <div className='h-[100vh] -mt-[53px] flex items-center justify-center bg-[#ECF1F4]'>
@@ -172,7 +154,9 @@ const Page = () => {
             </div>
 
             {errors.submit && <p className='text-red-500'>{errors.submit}</p>} {/* Display submit error */}
-
+            <div className='flex gap-2 text-[12px] mt-5 items-center justify-end '>
+              <button  className='text-blue-500'> Forgot Password?</button>
+            </div>
             <div className="flex justify-center">
               <button 
                 type="submit" 

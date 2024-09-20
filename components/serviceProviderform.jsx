@@ -543,28 +543,44 @@ const handleAddNewTrainingFieldToqualifications = () => {
                     />
                 </div>
                 <div className='flex flex-col w-[48%]'>
-                    <p className='text-[#161C2D] font-semibold text-[14px]'>Start Date</p>
-                    <input
-                        type="date"
-                        value={exp.startDate || ''}
-                        onChange={(e) => handleExperienceChange(index, 'startDate', e.target.value)}
-                        className='border p-2 rounded-md text-[14px]  outline-none'
-                        required
-                    />
-                </div>
+        <p className='text-[#161C2D] font-semibold text-[14px]'>Start Date</p>
+        <input
+            type="date"
+            value={exp.startDate || ''}
+            onChange={(e) => handleExperienceChange(index, 'startDate', e.target.value)}
+            className='border p-2 rounded-md text-[14px] outline-none'
+            required
+        />
+    </div>
             </div>
             <div className='flex justify-between gap-4'>
-                <div className='flex flex-col w-[48%]'>
-                    <p className='text-[#161C2D] font-semibold text-[14px]'>End Date</p>
-                    <input
-                        type="date"
-                        value={exp.endDate || ''}
-                        onChange={(e) => handleExperienceChange(index, 'endDate', e.target.value)}
-                        className='border p-2 rounded-md text-[14px]  outline-none'
-                        required
-                    />
-                </div>
-            </div>
+   
+</div>
+
+<div className='flex items-center justify-between gap-4'>
+    <div className='flex flex-col w-[48%]'>
+        <p className='text-[#161C2D] font-semibold text-[14px]'>End Date</p>
+        <input
+            type="date"
+            value={exp.endDate === "Present" ? '' : exp.endDate || ''}
+            onChange={(e) => handleExperienceChange(index, 'endDate', e.target.value)}
+            className='border p-2 rounded-md text-[14px] outline-none'
+            disabled={exp.isCurrentlyWorking} // Disable if currently working
+            required={!exp.isCurrentlyWorking} // Make it required if not currently working
+        />
+    </div>
+
+    <div className='flex flex-col w-[48%]'>
+        <p className='text-[#161C2D] font-semibold text-[14px]'>Currently Working</p>
+        <input
+            type="checkbox"
+            checked={exp.isCurrentlyWorking || false}
+            onChange={(e) => handleExperienceChange(index, 'isCurrentlyWorking', e.target.checked)}
+        />
+        <label className='text-[14px]'>I am currently working at this company</label>
+    </div>
+</div>
+
             {/* Responsibilities */}
             <div className='flex flex-col'>
                 <p className='text-[#161C2D] font-semibold text-[14px]'>Responsibilities</p>

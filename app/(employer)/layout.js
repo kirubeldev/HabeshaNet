@@ -14,9 +14,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <>
-      {/* <EmpNav /> */}
+      <EmpNav />
         {children}
-        {/* <Footer/> */}
+        <Footer/>
     </>
     
   );
