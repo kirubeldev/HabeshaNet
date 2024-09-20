@@ -17,7 +17,7 @@ const EmployerHero = () => {
         maxwidth: "100vw",
       }}
     >
-      <div className="flex md:flex-row flex-col justify-center md:justify-between md:max-w-6xl mx-auto  pt-8 w-full">
+      <div className="flex md:flex-row  items-center h-[90vh] flex-col justify-center md:justify-between md:max-w-6xl mx-auto  pt-8 w-full">
         <div className="flex w-1/2 justify-start items-center">
           <div className="flex flex-col">
             <h1 className="text-[#020617] text-[32px] md:text-[48px]  font-bold">

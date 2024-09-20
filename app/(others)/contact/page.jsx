@@ -6,11 +6,12 @@ const page = () => {
   return (
     <div>
 
-       <div className='max-w-6xl mx-auto flex flex-col items-center'>
+       <div className='max-w-6xl mx-auto flex mt-[100px] flex-col items-center'>
         <div className='text-center'>
           <h1 className='text-[36px] font-bold'>Contact us</h1>
           <p className='text-[#161C2D]'>
-          With lots of unique blocks, you can easily build a page without <br /> coding. Build your next consultancy website within few minutes.
+          With lots of unique blocks, you can easily build a page without <br /> 
+          coding. Build your next consultancy website within few minutes.
           </p>
     </div>
         </div>

@@ -8,7 +8,7 @@ export default function LayoutWrapper({ children }) {
   const pathname = usePathname();
 console.log(pathname);
   // Define the routes where you don't want the layout (Nav and Footer)
-  const hideLayoutRoutes = ["/signin", "/signup" , "/employer"];
+  const hideLayoutRoutes = ["/signin", "/signup" , "/employer" , "/jobpost", "/talent" , "/jobsearch"];
 
   // Check if the current path matches any in hideLayoutRoutes
   const shouldHideLayout = hideLayoutRoutes.includes(pathname);

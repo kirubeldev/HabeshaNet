@@ -17,12 +17,20 @@ const EmpNav = () => {
 
 
 
-  const handellogout = async()=>{
-    const res = await axios.post('/auth/signout' , )
-    console.log(res)
-    router.push("/")
+  const handellogout = async () => {
+    try {
+        await axios.post('/auth/signout');
 
-  }
+        setDropdownOpen(false);
+
+        router.push("/");
+        console.log("loged out");
+        
+    } catch (err) {
+        console.error('Logout failed:', err);
+    }
+};
+
   return (
     <div className='bg-[#fffafa]'>
       <div className=' hidden md:flex md:justify-between md:py-3 md:items-center md:flex-row md:max-w-6xl md:mx-auto'>
@@ -32,9 +40,9 @@ const EmpNav = () => {
         <div>
             <nav>
                 <ul className='flex gap-[30px]'>
-                    <li><Link  className='text-[16px]  font- ' href="/"> My jobs </Link></li>
-                    <li><Link  className='text-[16px]  font- ' href="/about"> Talent </Link></li>
-                    <li><Link  className='text-[16px]  font- '  href=""> Contact </Link></li>
+                    <li><Link  className='text-[16px]  font- ' href="/jobsearch"> My jobs </Link></li>
+                    <li><Link  className='text-[16px]  font- ' href="/talent"> Talent </Link></li>
+                    <li><Link  className='text-[16px]  font- '  href="/contact"> Contact </Link></li>
                 </ul>
             </nav>
         </div>
