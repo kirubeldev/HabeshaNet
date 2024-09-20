@@ -14,7 +14,7 @@ const ServiceProviderForm = ({ accestocken }) => {
   const [profession, setProfession] = useState('');
   const [bio, setBio] = useState('');
   const [profilePicture, setProfilePicture] = useState(null);
-  const [preferredContact, setPreferredContact] = useState('');
+  const [preferredContact, setPreferredContact] = useState('Email'); // Default value set to 'Email'
   const [location, setLocation] = useState({ city: '', state: '', country: '' });
   const [serviceCategory, setServiceCategory] = useState('');
   const [serviceTitle, setServiceTitle] = useState('');
@@ -43,7 +43,7 @@ const ServiceProviderForm = ({ accestocken }) => {
   const [languages, setLanguages] = useState(['']);
 
   const daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-
+ 
   // Toggle availability day
   const toggleDay = (day) => {
     setAvailabilityDays(prev => prev.includes(day) ? prev.filter(d => d !== day) : [...prev, day]);
@@ -62,8 +62,8 @@ const router = useRouter()
     formData.append('profession', profession);
     formData.append('bio', bio);
     if (profilePicture) {
-      formData.append('profilePicture', profilePicture);
-    }
+      formData.append('profilePicture', profilePicture); // Append the file
+  }
     formData.append('preferredContactMethod', preferredContact);
     formData.append('location', JSON.stringify(location));
     formData.append('serviceCategory', serviceCategory);
@@ -99,14 +99,28 @@ const router = useRouter()
         alert('Failed to save profile.');
       }
     } catch (error) {
-      console.error('Error:', error);
-      alert('An error occurred. Please try again.');
-      // console.log(response.data);
-      
-    }
+      // Log the entire error response for debugging
+      console.error('Error:', error.response);
+  
+      // Prepare a user-friendly error message
+      const errorMessage = error.response?.data?.message || 'An error occurred. Please try again.';
+  
+      // Show the error message to the user
+      alert(`An error occurred: ${errorMessage}`);
+  }
   };
 
   // Handlers for dynamic fields
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+        setProfilePicture(file); // Store the file object for upload
+    }
+};
+const handlePdfChange = (e) => {
+  const files = Array.from(e.target.files); // Convert FileList to Array
+  setPortfolioFiles(files); // Store the PDF files in state
+};
 
   // Skills
   const handleAddSkill = () => {
@@ -291,7 +305,7 @@ const handleAddNewTrainingFieldToqualifications = () => {
                     <input
                       type="text"
                       onChange={(e) => setFirstName(e.target.value)}
-                      className='border p-2 rounded-md text-[14px]'
+                      className='border p-2 rounded-md text-[14px]  outline-none'
                       placeholder='i.e. John'
                       required
                     />
@@ -301,7 +315,7 @@ const handleAddNewTrainingFieldToqualifications = () => {
                     <input
                       type="tel"
                       onChange={(e) => setPhoneNumber(e.target.value)}
-                      className='border p-2 rounded-md text-[14px]'
+                      className='border p-2 rounded-md text-[14px]  outline-none'
                       placeholder='i.e. +1234567890'
                       required
                     />
@@ -315,7 +329,7 @@ const handleAddNewTrainingFieldToqualifications = () => {
                     <input
                       type="text"
                       onChange={(e) => setLastName(e.target.value)}
-                      className='border p-2 rounded-md text-[14px]'
+                      className='border p-2 rounded-md text-[14px]  outline-none'
                       placeholder='i.e. Doe'
                       required
                     />
@@ -325,7 +339,7 @@ const handleAddNewTrainingFieldToqualifications = () => {
                     <input
                       type="text"
                       onChange={(e) => setProfession(e.target.value)}
-                      className='border p-2 rounded-md text-[14px]'
+                      className='border p-2 rounded-md text-[14px]  outline-none'
                       placeholder='i.e. Electrician'
                       required
                     />
@@ -339,21 +353,25 @@ const handleAddNewTrainingFieldToqualifications = () => {
                     <input
                       type="email"
                       onChange={(e) => setEmail(e.target.value)}
-                      className='border p-2 rounded-md text-[14px]'
+                      className='border p-2 rounded-md text-[14px]  outline-none'
                       placeholder='i.e. john.doe@example.com'
                       required
                     />
                   </div>
-                  <div className='space-y-4 flex flex-col'>
-                    <p className='text-[#161C2D] font-semibold text-[16px]'>Preferred Contact Method</p>
-                    <input
-                      type="text"
-                      onChange={(e) => setPreferredContact(e.target.value)}
-                      className='border p-2 rounded-md text-[14px]'
-                      placeholder='i.e. Email or Phone'
-                      required
-                    />
-                  </div>
+                 <div className='space-y-4 flex flex-col'>
+      <p>
+        <span className='text-[#161C2D] font-semibold text-[16px]'>Preferred Contact Method</span>
+      </p>
+      <select 
+        className='border p-2 rounded-md text-[14px]  outline-none' 
+        value={preferredContact} // Bind select value to state
+        onChange={(e) => setPreferredContact(e.target.value)} // Update state on change
+      >
+        <option value="Email">Email</option>
+        <option value="Phone">Phone</option>
+        <option value="SMS">SMS</option>
+      </select>
+    </div>
                 </div>
               </div>
 
@@ -363,22 +381,26 @@ const handleAddNewTrainingFieldToqualifications = () => {
                   <div className='flex items-center gap-4'>
                     {/* Profile Picture */}
                     <div className='space-y-4 flex flex-col'>
-                      <p className='text-[#161C2D] font-semibold text-[16px]'>Profile Picture</p>
-                      <div className="flex items-center">
-                        <img src="./user.png" alt="User" className="object-contain w-12 h-12 rounded-full mx-3" />
-                        <input
-                          type="file"
-                          accept="image/*"
-                          className='border p-2 text-gray rounded-md text-[14px]'
-                          onChange={(e) => setProfilePicture(e.target.files[0])}
-                        />
-                      </div>
-                    </div>
+      <p className='text-[#161C2D] font-semibold text-[16px]'>Profile Picture</p>
+      <div className="flex items-center">
+      <img 
+    src={profilePicture ? URL.createObjectURL(profilePicture) : "./user.png"} 
+    alt="User" 
+    className="object-cover w-12 h-12 rounded-full mx-3" 
+/>
+        <input
+          type="file"
+          accept="image/*"
+          className='border  p-2 text-gray rounded-md text-[14px]'
+          onChange={handleImageChange}
+        />
+      </div>
+    </div>
 
                     {/* Bio */}
                     <div className='space-y-4 flex flex-1 flex-col'>
                       <p className='text-[#161C2D] font-semibold text-[16px]'>Bio</p>
-                      <textarea
+                      <input
                         className='border px-2 rounded-md text-[14px] h-24'
                         onChange={(e) => setBio(e.target.value)}
                         placeholder='Tell us about yourself...'
@@ -400,7 +422,7 @@ const handleAddNewTrainingFieldToqualifications = () => {
                         type="text"
                         value={location.city}
                         onChange={(e) => setLocation(prev => ({ ...prev, city: e.target.value }))}
-                        className='border p-2 rounded-md text-[14px]'
+                        className='border p-2 rounded-md text-[14px]  outline-none'
                         placeholder='i.e. Addis Ababa'
                         required
                       />
@@ -411,7 +433,7 @@ const handleAddNewTrainingFieldToqualifications = () => {
                         type="text"
                         value={location.state}
                         onChange={(e) => setLocation(prev => ({ ...prev, state: e.target.value }))}
-                        className='border p-2 rounded-md text-[14px]'
+                        className='border p-2 rounded-md text-[14px]  outline-none'
                         placeholder='i.e. Addis Ababa'
                         required
                       />
@@ -422,7 +444,7 @@ const handleAddNewTrainingFieldToqualifications = () => {
                         type="text"
                         value={location.country}
                         onChange={(e) => setLocation(prev => ({ ...prev, country: e.target.value }))}
-                        className='border p-2 rounded-md text-[14px]'
+                        className='border p-2 rounded-md text-[14px]  outline-none'
                         placeholder='i.e. Ethiopia'
                         required
                       />
@@ -445,7 +467,7 @@ const handleAddNewTrainingFieldToqualifications = () => {
                       type="text"
                       value={serviceCategory}
                       onChange={(e) => setServiceCategory(e.target.value)}
-                      className='border p-2 rounded-md text-[14px]'
+                      className='border p-2 rounded-md text-[14px]  outline-none'
                       placeholder='i.e. Plumbing'
                       required
                     />
@@ -456,7 +478,7 @@ const handleAddNewTrainingFieldToqualifications = () => {
                       type="text"
                       value={serviceTitle}
                       onChange={(e) => setServiceTitle(e.target.value)}
-                      className='border p-2 rounded-md text-[14px]'
+                      className='border p-2 rounded-md text-[14px]  outline-none'
                       placeholder='i.e. Residential Plumbing'
                       required
                     />
@@ -491,7 +513,7 @@ const handleAddNewTrainingFieldToqualifications = () => {
                         type="text"
                         value={exp.position || ''}
                         onChange={(e) => handleExperienceChange(index, 'position', e.target.value)}
-                        className='border p-2 rounded-md text-[14px]'
+                        className='border p-2 rounded-md text-[14px]  outline-none'
                         placeholder='e.g., Senior Plumber'
                         required
                     />
@@ -502,7 +524,7 @@ const handleAddNewTrainingFieldToqualifications = () => {
                         type="text"
                         value={exp.company || ''}
                         onChange={(e) => handleExperienceChange(index, 'company', e.target.value)}
-                        className='border p-2 rounded-md text-[14px]'
+                        className='border p-2 rounded-md text-[14px]  outline-none'
                         placeholder='e.g., ABC Plumbing Co.'
                         required
                     />
@@ -515,7 +537,7 @@ const handleAddNewTrainingFieldToqualifications = () => {
                         type="text" // Change to text to ensure it's treated as a string
                         value={exp.yearsOfExperience || ''}
                         onChange={(e) => handleExperienceChange(index, 'yearsOfExperience', e.target.value)}
-                        className='border p-2 rounded-md text-[14px]'
+                        className='border p-2 rounded-md text-[14px]  outline-none'
                         placeholder='e.g., 5'
                         required
                     />
@@ -526,7 +548,7 @@ const handleAddNewTrainingFieldToqualifications = () => {
                         type="date"
                         value={exp.startDate || ''}
                         onChange={(e) => handleExperienceChange(index, 'startDate', e.target.value)}
-                        className='border p-2 rounded-md text-[14px]'
+                        className='border p-2 rounded-md text-[14px]  outline-none'
                         required
                     />
                 </div>
@@ -538,7 +560,7 @@ const handleAddNewTrainingFieldToqualifications = () => {
                         type="date"
                         value={exp.endDate || ''}
                         onChange={(e) => handleExperienceChange(index, 'endDate', e.target.value)}
-                        className='border p-2 rounded-md text-[14px]'
+                        className='border p-2 rounded-md text-[14px]  outline-none'
                         required
                     />
                 </div>
@@ -552,7 +574,7 @@ const handleAddNewTrainingFieldToqualifications = () => {
                         type="text"
                         value={res || ''}
                         onChange={(e) => handleResponsibilityChange(index, resIndex, e.target.value)}
-                        className='border p-2 rounded-md text-[14px] mb-2'
+                        className='border p-2 rounded-md text-[14px]  outline-none mb-2'
                         placeholder='e.g., Install plumbing systems'
                         required
                     />
@@ -664,7 +686,7 @@ const handleAddNewTrainingFieldToqualifications = () => {
                       type="text"
                       value={skill}
                       onChange={(e) => handleSkillChange(index, e.target.value)}
-                      className='border p-2 rounded-md text-[14px] flex-1'
+                      className='border p-2 rounded-md text-[14px]  outline-none flex-1'
                       placeholder='e.g., Electrical Wiring'
                       required
                     />
@@ -703,7 +725,7 @@ const handleAddNewTrainingFieldToqualifications = () => {
                         type="url"
                         value={link}
                         onChange={(e) => handlePortfolioLinkChange(index, e.target.value)}
-                        className='border p-2 rounded-md text-[14px] flex-1'
+                        className='border p-2 rounded-md text-[14px]  outline-none flex-1'
                         placeholder='e.g., https://portfolio.com/project1'
                         required
                       />
@@ -735,13 +757,13 @@ const handleAddNewTrainingFieldToqualifications = () => {
                   <p className='text-[#161C2D] font-semibold text-[14px]'>Portfolio Files</p>
                   {portfolioFiles.map((file, index) => (
                     <div key={index} className='flex items-center space-x-2 mt-2'>
-                      <input
-                        type="file"
-                        accept="image/*,application/pdf"
-                        onChange={(e) => handlePortfolioFileChange(index, e.target.files[0])}
-                        className='border p-2 rounded-md text-[14px] flex-1'
-                        required
-                      />
+  <input
+    type="file"
+    accept=".pdf" // Accepts only PDF files
+    multiple // Allows multiple file uploads if desired
+    className='border p-2 text-gray rounded-md text-[14px]'
+    onChange={handlePdfChange} // Handles PDF file selection
+/>
                       {portfolioFiles.length > 1 && (
                         <button
                           type="button"
@@ -794,7 +816,7 @@ const handleAddNewTrainingFieldToqualifications = () => {
                       <input
                         type="text"
                         onChange={(e) => setAvailabilityHours(e.target.value)}
-                        className='border p-2 rounded-md text-[14px]'
+                        className='border p-2 rounded-md text-[14px]  outline-none'
                         placeholder='e.g., 9am-5pm'
                         required
                       />
@@ -812,7 +834,7 @@ const handleAddNewTrainingFieldToqualifications = () => {
                     type="number"
                     value={hourlyRate}
                     onChange={(e) => setHourlyRate(e.target.value)}
-                    className='border p-2 rounded-md text-[14px]'
+                    className='border p-2 rounded-md text-[14px]  outline-none'
                     placeholder='e.g., 50'
                     required
                   />
@@ -827,7 +849,7 @@ const handleAddNewTrainingFieldToqualifications = () => {
                         type="text"
                         value={lang}
                         onChange={(e) => handleLanguageChange(index, e.target.value)}
-                        className='border p-2 rounded-md text-[14px] flex-1'
+                        className='border p-2 rounded-md text-[14px]  outline-none flex-1'
                         placeholder='e.g., English'
                         required
                       />

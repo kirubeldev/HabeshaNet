@@ -10,7 +10,7 @@ const PropertieOwnerForm = ({ accestocken }) => {
     const [propertyType, setPropertyType] = useState('');
     const [bio, setBio] = useState('');
     const [profilePicture, setProfilePicture] = useState(null);
-    const [preferredContact, setPreferredContact] = useState('');
+    const [preferredContact, setPreferredContact] = useState('Email'); // Default value set to 'Email'
     const [location, setLocation] = useState({
         city: '',
         state: '',
@@ -20,36 +20,51 @@ const PropertieOwnerForm = ({ accestocken }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const data = {
-            firstName,
-            lastName,
-            email,
-            phoneNumber,
-            propertyType,
-            bio,
-            profilePicture,
-            preferredContactMethod: preferredContact,
-            location,
-        };
+        const formData = new FormData();
+        formData.append('firstName', firstName);
+        formData.append('lastName', lastName);
+        formData.append('email', email);
+        formData.append('phoneNumber', phoneNumber);
+        formData.append('propertyType', propertyType);
+        formData.append('bio', bio);
+        if (profilePicture) {
+            formData.append('profilePicture', profilePicture); // Append the file for upload
+        }
+        formData.append('preferredContactMethod', preferredContact);
+        formData.append('location', JSON.stringify(location)); // Send location as a JSON string
 
-        console.log(data);
+        console.log(formData);
         console.log("Got access token: " + accestocken);
 
         try {
-            const response = await axios.patch('/auth/property-owners/profile/complete', data, {
+            const response = await axios.patch('/auth/property-owners/profile/complete', formData, {
                 headers: {
                     Authorization: `Bearer ${accestocken}`, // Add Bearer token here
+                    'Content-Type': 'multipart/form-data', // Specify content type for FormData
                 }
             });
 
-            if (response.status) {
+            if (response.status) { // Check for successful response
                 alert('Profile saved successfully!');
             } else {
                 alert('Failed to save profile.');
             }
         } catch (error) {
+            // Log the entire error response for debugging
             console.error('Error:', error.response);
-            alert('An error occurred. Please try again.');
+        
+            // Prepare a user-friendly error message
+            const errorMessage = error.response?.data?.message || 'An error occurred. Please try again.';
+        
+            // Show the error message to the user
+            alert(`An error occurred: ${errorMessage}`);
+        }
+    };
+
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setProfilePicture(file); // Set the file instead of the URL
         }
     };
 
@@ -75,21 +90,21 @@ const PropertieOwnerForm = ({ accestocken }) => {
                             <div className='space-y-6 w-[48%]'>
                                 <div className='flex flex-col space-y-4'>
                                     <label className='text-[#161C2D] font-semibold text-[16px]'>First Name</label>
-                                    <input type="text" onChange={(e) => setFirstName(e.target.value)} className='border p-2 rounded-md text-[14px]' placeholder='i.e. John' />
+                                    <input type="text" onChange={(e) => setFirstName(e.target.value)} className='border p-2 rounded-md text-[14px] outline-none' placeholder='i.e. John' />
                                 </div>
                                 <div className='flex flex-col space-y-4'>
                                     <label className='text-[#161C2D] font-semibold text-[16px]'>Phone Number</label>
-                                    <input type="text" onChange={(e) => setPhoneNumber(e.target.value)} className='border p-2 rounded-md text-[14px]' placeholder='i.e. +1234567890' />
+                                    <input type="text" onChange={(e) => setPhoneNumber(e.target.value)} className='border p-2 rounded-md text-[14px] outline-none' placeholder='i.e. +1234567890' />
                                 </div>
                             </div>
                             <div className='space-y-6 w-[48%]'>
                                 <div className='flex flex-col space-y-4'>
                                     <label className='text-[#161C2D] font-semibold text-[16px]'>Last Name</label>
-                                    <input type="text" onChange={(e) => setLastName(e.target.value)} className='border p-2 rounded-md text-[14px]' placeholder='i.e. Doe' />
+                                    <input type="text" onChange={(e) => setLastName(e.target.value)} className='border p-2 rounded-md text-[14px] outline-none' placeholder='i.e. Doe' />
                                 </div>
                                 <div className='flex flex-col space-y-4'>
                                     <label className='text-[#161C2D] font-semibold text-[16px]'>Property Type</label>
-                                    <input type="text" onChange={(e) => setPropertyType(e.target.value)} className='border p-2 rounded-md text-[14px]' placeholder='i.e. Apartment' />
+                                    <input type="text" onChange={(e) => setPropertyType(e.target.value)} className='border p-2 rounded-md text-[14px] outline-none' placeholder='i.e. Apartment' />
                                 </div>
                             </div>
                         </div>
@@ -98,28 +113,55 @@ const PropertieOwnerForm = ({ accestocken }) => {
                             <div className='space-y-6 w-[48%]'>
                                 <div className='flex flex-col space-y-4'>
                                     <label className='text-[#161C2D] font-semibold text-[16px]'>Email Address</label>
-                                    <input type="email" onChange={(e) => setEmail(e.target.value)} className='border p-2 rounded-md text-[14px]' placeholder='i.e. john.doe@example.com' />
+                                    <input type="email" onChange={(e) => setEmail(e.target.value)} className='border p-2 rounded-md text-[14px] outline-none' placeholder='i.e. john.doe@example.com' />
                                 </div>
-                                <div className='flex flex-col space-y-4'>
-                                    <label className='text-[#161C2D] font-semibold text-[16px]'>Preferred Contact Method</label>
-                                    <input type="text" onChange={(e) => setPreferredContact(e.target.value)} className='border p-2 rounded-md text-[14px]' placeholder='i.e. Email or Phone' />
+                                <div className='space-y-4 flex flex-col'>
+                                    <p>
+                                        <span className='text-[#161C2D] font-semibold text-[16px]'>Preferred Contact Method</span>
+                                    </p>
+                                    <select 
+                                        className='border p-2 rounded-md text-[14px] outline-none' 
+                                        value={preferredContact} // Bind select value to state
+                                        onChange={(e) => setPreferredContact(e.target.value)} // Update state on change
+                                    >
+                                        <option value="Email">Email</option>
+                                        <option value="Phone">Phone</option>
+                                        <option value="SMS">SMS</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
 
                         <div className='flex flex-col'>
-                            <div className='space-y-6'>
+                            <div className='rounded-md space-y-6'>
                                 <div className='flex items-center gap-4'>
-                                    <div className='flex flex-col space-y-4'>
-                                        <label className='text-[#161C2D] font-semibold text-[16px]'>Profile Picture</label>
+                                    {/* Profile Picture */}
+                                    <div className='space-y-4 flex flex-col'>
+                                        <p className='text-[#161C2D] font-semibold text-[16px]'>Profile Picture</p>
                                         <div className="flex items-center">
-                                            <img src="./user.png" className="object-contain size-[50px] rounded-full mx-3" alt="Profile" />
-                                            <input type="file" className='border p-2 text-gray rounded-md text-[14px]' onChange={(e) => setProfilePicture(e.target.files[0])} />
+                                            <img 
+                                                src={profilePicture ? URL.createObjectURL(profilePicture) : "./user.png"} 
+                                                alt="User" 
+                                                className="object-cover w-12 h-12 rounded-full mx-3" 
+                                            />
+                                            <input
+                                                type="file"
+                                                accept="image/*"
+                                                className='border p-2 text-gray rounded-md text-[14px]'
+                                                onChange={handleImageChange}
+                                            />
                                         </div>
                                     </div>
-                                    <div className='flex flex-1 flex-col space-y-4'>
-                                        <label className='text-[#161C2D] font-semibold text-[16px]'>Bio</label>
-                                        <textarea className='border px-2 rounded-md text-[14px]' onChange={(e) => setBio(e.target.value)} placeholder='Tell us about yourself'></textarea>
+
+                                    {/* Bio */}
+                                    <div className='space-y-4 flex flex-1 flex-col'>
+                                        <p className='text-[#161C2D] font-semibold text-[16px]'>Bio</p>
+                                        <textarea
+                                            className='border px-2 rounded-md text-[14px] h-24'
+                                            onChange={(e) => setBio(e.target.value)}
+                                            placeholder='Tell us about yourself...'
+                                            required
+                                        />
                                     </div>
                                 </div>
                             </div>
@@ -130,27 +172,28 @@ const PropertieOwnerForm = ({ accestocken }) => {
                             <div className='flex justify-between gap-4'>
                                 <div className='w-[48%] flex flex-col space-y-4'>
                                     <label className='text-[#161C2D] font-semibold text-[16px]'>City</label>
-                                    <input type="text" onChange={(e) => setLocation(prev => ({ ...prev, city: e.target.value }))} className='border p-2 rounded-md text-[14px]' placeholder='City' />
+                                    <input type="text" onChange={(e) => setLocation(prev => ({ ...prev, city: e.target.value }))} className='border p-2 rounded-md text-[14px] outline-none' placeholder='City' />
                                 </div>
                                 <div className='w-[48%] flex flex-col space-y-4'>
                                     <label className='text-[#161C2D] font-semibold text-[16px]'>State</label>
-                                    <input type="text" onChange={(e) => setLocation(prev => ({ ...prev, state: e.target.value }))} className='border p-2 rounded-md text-[14px]' placeholder='State' />
+                                    <input type="text" onChange={(e) => setLocation(prev => ({ ...prev, state: e.target.value }))} className='border p-2 rounded-md text-[14px] outline-none' placeholder='State' />
                                 </div>
                                 <div className='w-[48%] flex flex-col space-y-4'>
                                     <label className='text-[#161C2D] font-semibold text-[16px]'>Country</label>
-                                    <input type="text" onChange={(e) => setLocation(prev => ({ ...prev, country: e.target.value }))} className='border p-2 rounded-md text-[14px]' placeholder='Country' />
+                                    <input type="text" onChange={(e) => setLocation(prev => ({ ...prev, country: e.target.value }))} className='border p-2 rounded-md text-[14px] outline-none' placeholder='Country' />
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
 
-                <div className='flex w-full items-center justify-center'>
-                    <button type="submit" className="bg-[#B53CC9] text-white px-[30px] mt-[50px] py-[7px] rounded-md">Save Profile</button>
+                        <div className='flex justify-center'>
+                            <button type="submit" className='px-4 py-2 mt-5 bg-[#FC9B00] text-white rounded-md'>Submit</button>
+                       
+                        </div>
+                    </div>
                 </div>
             </form>
         </div>
     );
-}
+};
 
 export default PropertieOwnerForm;

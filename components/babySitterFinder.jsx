@@ -10,61 +10,74 @@ const BabySitterFinder = ({ accestocken }) => {
     const [phoneNumber, setPhoneNumber] = useState('');
     const [bio, setBio] = useState('');
     const [profilePicture, setProfilePicture] = useState(null);
-    const [preferredContact, setPreferredContact] = useState('');
+    const [preferredContact, setPreferredContact] = useState('Email'); // Default value set to 'Email'
     const [location, setLocation] = useState({
         city: '',
         state: '',
         country: ''
     });
 
-    const router = useRouter()
+    const router = useRouter();
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const data = {
-            firstName,
-            lastName,
-            email,
-            phoneNumber,
-            bio,
-            profilePicture,
-            preferredContactMethod: preferredContact,
-            location, // Pass location as an object
-        };
-
-        console.log(data);
-        console.log("Got access token for baby sitter named: " + accestocken);
+        const formData = new FormData();
+        formData.append('firstName', firstName);
+        formData.append('lastName', lastName);
+        formData.append('email', email);
+        formData.append('phoneNumber', phoneNumber);
+        formData.append('bio', bio);
+        if (profilePicture) {
+            formData.append('profilePicture', profilePicture); // Append image file
+        }
+        formData.append('preferredContactMethod', preferredContact);
+        formData.append('location', JSON.stringify(location)); // Pass location as a JSON string
 
         try {
-            const response = await axios.patch('/auth/baby-sitter-finder/profile/complete', data, {
+            const response = await axios.patch('/auth/baby-sitter-finder/profile/complete', formData, {
                 headers: {
-                    Authorization: `Bearer ${accestocken}`, // Add Bearer token here
+                    Authorization: `Bearer ${accestocken}`,
+                    'Content-Type': 'multipart/form-data', // Set content type for form data
                 }
             });
 
             if (response.status) {
                 alert('Profile saved successfully!');
                 router.push("/subpay");
-
             } else {
                 alert('Failed to save profile.');
             }
-        } catch (error) {
+        }catch (error) {
+            // Log the entire error response for debugging
             console.error('Error:', error.response);
-            alert('An error occurred. Please try again.');
+        
+            // Prepare a user-friendly error message
+            const errorMessage = error.response?.data?.message || 'An error occurred. Please try again.';
+        
+            // Show the error message to the user
+            alert(`An error occurred: ${errorMessage}`);
+        }
+    };
+
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setProfilePicture(file); // Store the file for uploading
         }
     };
 
     return (
         <div>
             <div className='flex justify-center mt-10 items-center max-w-6xl mx-auto'>
+                {/* Progress Indicators */}
                 <div className='size-[35px] flex justify-center items-center bg-[#FC9B00] rounded-full text-white font-semibold'>1</div>
                 <div className='w-[200px] border md:w-[290px] border-[#B2B2B5]'></div>
                 <div className='size-[35px] flex justify-center items-center bg-[#FC9B00] rounded-full text-white font-bold'>2</div>
-          <div className='w-[200px] border md:w-[290px] border-[#B2B2B5]'></div>
-          <div className='size-[35px] flex justify-center items-center bg-[#FC9B00] rounded-full text-white font-bold'>3</div>
-          <div className='w-[200px] border md:w-[290px] border-[#B2B2B5]'></div>
-           <div className='size-[35px] flex justify-center items-center border-[3px] border-[#FC9B00] rounded-full text-[#FC9B00] font-semibold'>$</div>
+                <div className='w-[200px] border md:w-[290px] border-[#B2B2B5]'></div>
+                <div className='size-[35px] flex justify-center items-center bg-[#FC9B00] rounded-full text-white font-bold'>3</div>
+                <div className='w-[200px] border md:w-[290px] border-[#B2B2B5]'></div>
+                <div className='size-[35px] flex justify-center items-center border-[3px] border-[#FC9B00] rounded-full text-[#FC9B00] font-semibold'>$</div>
             </div>
 
             <form onSubmit={handleSubmit}>
@@ -82,13 +95,13 @@ const BabySitterFinder = ({ accestocken }) => {
                                         <p>
                                             <span className='text-[#161C2D] font-semibold text-[16px]'>First Name</span>
                                         </p>
-                                        <input type="text" onChange={(e) => setFirstName(e.target.value)} className='border p-2 rounded-md text-[14px]' placeholder='i.e. John' />
+                                        <input type="text" onChange={(e) => setFirstName(e.target.value)} className='border p-2 rounded-md text-[14px] outline-none' placeholder='i.e. John' />
                                     </div>
                                     <div className='space-y-4 flex flex-col'>
                                         <p>
                                             <span className='text-[#161C2D] font-semibold text-[16px]'>Phone Number</span>
                                         </p>
-                                        <input type="text" onChange={(e) => setPhoneNumber(e.target.value)} className='border p-2 rounded-md text-[14px]' placeholder='i.e. +1234567890' />
+                                        <input type="text" onChange={(e) => setPhoneNumber(e.target.value)} className='border p-2 rounded-md text-[14px] outline-none' placeholder='i.e. +1234567890' />
                                     </div>
                                 </div>
                                 <div className='space-y-6 w-[48%]'>
@@ -96,19 +109,27 @@ const BabySitterFinder = ({ accestocken }) => {
                                         <p>
                                             <span className='text-[#161C2D] font-semibold text-[16px]'>Last Name</span>
                                         </p>
-                                        <input type="text" className='border p-2 rounded-md text-[14px]' placeholder='i.e. Doe' onChange={(e) => setLastName(e.target.value)} />
+                                        <input type="text" className='border p-2 rounded-md text-[14px] outline-none' placeholder='i.e. Doe' onChange={(e) => setLastName(e.target.value)} />
                                     </div>
                                     <div className='space-y-4 flex flex-col'>
                                         <p>
                                             <span className='text-[#161C2D] font-semibold text-[16px]'>Email Address</span>
                                         </p>
-                                        <input type="email" className='border p-2 rounded-md text-[14px]' onChange={(e) => setEmail(e.target.value)} placeholder='i.e. john.doe@example.com' />
+                                        <input type="email" className='border p-2 rounded-md text-[14px] outline-none' onChange={(e) => setEmail(e.target.value)} placeholder='i.e. john.doe@example.com' />
                                     </div>
                                     <div className='space-y-4 flex flex-col'>
                                         <p>
                                             <span className='text-[#161C2D] font-semibold text-[16px]'>Preferred Contact Method</span>
                                         </p>
-                                        <input type="text" className='border p-2 rounded-md text-[14px]' onChange={(e) => setPreferredContact(e.target.value)} placeholder='Email or Phone' />
+                                        <select 
+                                            className='border p-2 rounded-md text-[14px] outline-none' 
+                                            value={preferredContact} // Bind select value to state
+                                            onChange={(e) => setPreferredContact(e.target.value)} // Update state on change
+                                        >
+                                            <option value="Email">Email</option>
+                                            <option value="Phone">Phone</option>
+                                            <option value="SMS">SMS</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -116,20 +137,33 @@ const BabySitterFinder = ({ accestocken }) => {
                             <div className='flex flex-col'>
                                 <div className='rounded-md space-y-6'>
                                     <div className='flex items-center gap-4'>
+                                        {/* Profile Picture */}
                                         <div className='space-y-4 flex flex-col'>
-                                            <p>
-                                                <span className='text-[#161C2D] font-semibold text-[16px]'>Profile Picture</span>
-                                            </p>
-                                            <div className="flex item-center">
-                                                <img src="./user.png" className="object-contain size-[50px] rounded-full mx-3" alt="Profile" />
-                                                <input type="file" className='border p-2 text-gray rounded-md text-[14px]' onChange={(e) => setProfilePicture(e.target.files[0])} />
+                                            <p className='text-[#161C2D] font-semibold text-[16px]'>Profile Picture</p>
+                                            <div className="flex items-center">
+                                                <img 
+                                                    src={profilePicture ? URL.createObjectURL(profilePicture) : "./user.png"} 
+                                                    alt="User" 
+                                                    className="object-cover w-12 h-12 rounded-full mx-3" 
+                                                />
+                                                <input
+                                                    type="file"
+                                                    accept="image/*"
+                                                    className='border p-2 text-gray rounded-md text-[14px]'
+                                                    onChange={handleImageChange}
+                                                />
                                             </div>
                                         </div>
+
+                                        {/* Bio */}
                                         <div className='space-y-4 flex flex-1 flex-col'>
-                                            <p>
-                                                <span className='text-[#161C2D] font-semibold text-[16px]'>Bio</span>
-                                            </p>
-                                            <textarea className='border px-2 rounded-md text-[14px]' onChange={(e) => setBio(e.target.value)} placeholder='Tell us about yourself' />
+                                            <p className='text-[#161C2D] font-semibold text-[16px]'>Bio</p>
+                                            <textarea
+                                                className='border px-2 rounded-md text-[14px] h-24'
+                                                onChange={(e) => setBio(e.target.value)}
+                                                placeholder='Tell us about yourself...'
+                                                required
+                                            />
                                         </div>
                                     </div>
                                 </div>
@@ -146,9 +180,9 @@ const BabySitterFinder = ({ accestocken }) => {
                                                 </p>
                                                 <input
                                                     type="text"
-                                                    className='border p-2 rounded-md text-[14px]'
+                                                    className='border p-2 rounded-md text-[14px] outline-none'
                                                     onChange={(e) => setLocation(prev => ({ ...prev, city: e.target.value }))}
-                                                    placeholder='City'
+                                                    placeholder='i.e. New York'
                                                 />
                                             </div>
                                         </div>
@@ -159,39 +193,44 @@ const BabySitterFinder = ({ accestocken }) => {
                                                 </p>
                                                 <input
                                                     type="text"
-                                                    className='border p-2 rounded-md text-[14px]'
+                                                    className='border p-2 rounded-md text-[14px] outline-none'
                                                     onChange={(e) => setLocation(prev => ({ ...prev, state: e.target.value }))}
-                                                    placeholder='State'
+                                                    placeholder='i.e. NY'
                                                 />
                                             </div>
                                         </div>
-                                        <div className='space-y-6 w-[48%]'>
+                                    </div>
+                                    <div className='flex justify-between gap-4'>
+                                        <div className='space-y-6 w-full'>
                                             <div className='space-y-4 flex flex-col'>
                                                 <p>
                                                     <span className='text-[#161C2D] font-semibold text-[16px]'>Country</span>
                                                 </p>
                                                 <input
                                                     type="text"
-                                                    className='border p-2 rounded-md text-[14px]'
+                                                    className='border p-2 rounded-md text-[14px] outline-none'
                                                     onChange={(e) => setLocation(prev => ({ ...prev, country: e.target.value }))}
-                                                    placeholder='Country'
+                                                    placeholder='i.e. USA'
                                                 />
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
 
-                <div className='flex w-full items-center justify-center'>
-                    <button type="submit" className="bg-[#B53CC9] text-white px-[30px] mt-[50px] py-[7px] rounded-md">Save Profile</button>
+                <div className='flex justify-center mt-5'>
+                    <button 
+                        type="submit"
+                        className='bg-[#B53CC9] text-white rounded-md py-2 px-3 font-semibold'>
+                        Save Profile
+                    </button>
                 </div>
             </form>
         </div>
     );
-}
+};
 
 export default BabySitterFinder;
