@@ -14,7 +14,8 @@ const Hero = () => {
         maxwidth: "100vw",
       }}
     >
-      <div className="flex md:flex-row flex-col justify-center md:justify-between md:max-w-6xl mx-auto  pt-8 w-full">
+      <div className="flex md:flex-row flex-col h-[90vh] justify-center md:justify-between item-center md:max-w-6xl mx-auto  w-full">
+       
         <div className="flex w-1/2 justify-start items-center">
           <div className="flex flex-col">
             <h1 className="text-[#020617] text-[52px]  font-bold">
@@ -39,10 +40,11 @@ const Hero = () => {
             </div>
           </div>
         </div>
+
         <div className="flex w-1/2 justify-center items-center 2xl:mt-12">
           <img
             src="./heron.jpg"
-            className="  2xl:min-w-[640px] 2xl:min-h-[501px] object-cover "
+            className="  2xl:min-w-[600px] 2xl:min-h-[501px] object-cover "
           />
         </div>
       </div>
