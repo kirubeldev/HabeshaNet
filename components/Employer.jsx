@@ -42,7 +42,7 @@ const Employer = ({ accestocken }) => {
                 }
             });
 
-            if (response.status === 200) {
+            if (response.status) {
                 alert('Profile saved successfully!');
             } else {
                 alert('Failed to save profile.');
@@ -60,9 +60,7 @@ const Employer = ({ accestocken }) => {
                 <div className='w-[200px] border md:w-[290px] border-[#B2B2B5]'></div>
                 <div className='size-[35px] flex justify-center items-center bg-[#FC9B00] rounded-full text-white font-semibold'>2</div>
                 <div className='w-[200px] border md:w-[290px] border-[#B2B2B5]'></div>
-                <div className='size-[35px] flex justify-center items-center border-[3px] border-[#FC9B00] rounded-full text-white font-semibold'></div>
-                <div className='w-[200px] border md:w-[290px] border-[#B2B2B5]'></div>
-                <div className='size-[35px] flex justify-center items-center border-[3px] border-[#FC9B00] rounded-full text-white font-semibold'></div>
+                <div className='size-[35px] flex justify-center items-center bg-[#FC9B00] rounded-full text-white font-bold'>3</div>
             </div>
 
             <div className="flex item-center justify-center">
@@ -121,15 +119,18 @@ const Employer = ({ accestocken }) => {
                     <div className='flex flex-col'>
                         <div className='rounded-md space-y-6'>
                             <div className='flex items-center gap-4'>
-                                <div className='space-y-4 flex flex-col'>
-                                    <p>
-                                        <span className='text-[#161C2D] font-semibold text-[16px]'>Profile Picture</span>
-                                    </p>
-                                    <div className="flex item-center">
-                                        <img src="./user.png" className="object-contain size-[50px] rounded-full mx-3" alt="Profile" />
-                                        <input type="file" className='border p-2 text-gray rounded-md text-[14px]' onChange={(e) => setProfilePicture(e.target.files[0])} />
-                                    </div>
-                                </div>
+                               <div className='space-y-4 flex flex-col'>
+                      <p className='text-[#161C2D] font-semibold text-[16px]'>Profile Picture</p>
+                      <div className="flex items-center">
+                        <img src="./user.png" alt="User" className="object-contain w-12 h-12 rounded-full mx-3" />
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className='border p-2 text-gray rounded-md text-[14px]'
+                          onChange={(e) => setProfilePicture(e.target.files[0])}
+                        />
+                      </div>
+                    </div>
                                 <div className='space-y-4 flex flex-1 flex-col'>
                                     <p>
                                         <span className='text-[#161C2D] font-semibold text-[16px]'>Bio</span>
@@ -182,7 +183,7 @@ const Employer = ({ accestocken }) => {
                     </div>
 
                     <div className='flex w-full items-center justify-center'>
-                        <button type="submit" className="bg-[#0097FF] text-white px-[30px] mt-[50px] py-[7px] rounded-md">Save Profile</button>
+                        <button type="submit" className="bg-[#B53CC9] text-white px-[30px] mt-[50px] py-[7px] rounded-md">Save Profile</button>
                     </div>
                 </form>
             </div>

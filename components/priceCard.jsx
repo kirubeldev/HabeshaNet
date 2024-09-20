@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React from 'react';
 import { TiTick } from 'react-icons/ti';
 
@@ -15,9 +16,11 @@ const PriceCard = ({ title, description, price, features = [], buttonText }) => 
           </h1>
         </div>
       </div>
-      <button className='py-[10px] rounded-lg my-[30px] text-white bg-[#0097FF] w-[260px] mt-[40px]'>
+      <Link href="https://www.paypal.com/et/home">
+      <button className='py-[10px] rounded-lg my-[30px] text-white bg-[#B53CC9] w-[260px] mt-[40px]'>
         {buttonText}
       </button>
+      </Link>
       <p className="text-[16px] font-semibold">What you get:</p>
       <div className="space-y-4 my-4">
         {features.map((feature, index) => (

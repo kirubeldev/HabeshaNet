@@ -59,7 +59,7 @@ const page = () => {
           
 
           <p>Upgrade Your Subscription To Explore All Profiles   </p>
-          <button className="py-[10px] flex gap-3 items-center rounded-lg mt-4 px-[30px] text-white bg-[#0097FF]">
+          <button className="py-[10px] flex gap-3 items-center rounded-lg mt-4 px-[30px] text-white bg-[#B53CC9]">
           Upgrade Subscription <FaStar />
               </button>
         </div>

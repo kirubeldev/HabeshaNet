@@ -24,7 +24,7 @@ const EmployerHero = () => {
               {" "}
               Post jobs and access candidate profiles with ease.            </p>
             <div className="flex gap-12 pt-12">
-              <button className="py-[10px] flex gap-3 items-center rounded-lg px-[38px] text-white bg-[#0097FF]">
+              <button className="py-[10px] flex gap-3 items-center rounded-lg px-[38px] text-white bg-[#B53CC9]">
                Post Job <FaArrowRightLong />
               </button>
               <button className="py-[10px] border flex gap-3 rounded-lg px-[30px]">

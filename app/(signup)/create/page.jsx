@@ -54,31 +54,33 @@ const Page = () => {
           <h1 className='text-[30px] md:text-[42px] font-bold'>
             Join Our Platform 
           </h1>
-          <div className='grid content-center grid-cols-2 lg:grid-cols-3 mx-auto pb-4 gap-6 text-center items-center'>
-            {options.map(option => (
-              <div
-                key={option.key}
-                className={`flex px-10 py-6 flex-col gap-3 border rounded-md cursor-pointer ${selectedOption === option.key ? 'bg-blue-100' : ''}`}
-                onClick={() => setSelectedOption(option.key)} // Simplified click handler
-              >
-                <div className='flex items-center justify-between'>
-                  {option.icon}
-                  <FaRegCircle className='size-[25px]' />
-                </div>
-                <p className="max-w-[156px]">{option.text}</p>
-              </div>
-            ))}
-          </div>
+          <div className='grid content-center grid-cols-2 lg:grid-cols-3 mx-auto pb-4 gap-6 text-center items-stretch justify-items-center'>
+  {options.map(option => (
+    <div
+      key={option.key}
+      className={`flex flex-col px-10 py-6 gap-3 border rounded-md cursor-pointer ${selectedOption === option.key ? 'bg-blue-100' : ''} h-full`}
+      onClick={() => setSelectedOption(option.key)} // Simplified click handler
+    >
+      <div className='flex items-center justify-between'>
+        {option.icon}
+        <FaRegCircle className='size-[25px]' />
+      </div>
+      <p className="max-w-[156px]">{option.text}</p>
+    </div>
+  ))}
+</div>
+
+
           <Link href={`/signup?userType=${selectedOption}`}>
             <button
               onClick={() => console.log('Navigating with userType:', selectedOption)} // Debug log
-              className={`py-3 px-6 rounded-md ${selectedOption ? 'bg-[#0097FF] text-white' : 'bg-[#ECF1F4] text-[#9E9EA1]'}`}
+              className={`py-3 px-6 rounded-md ${selectedOption ? 'bg-[#B53CC9] text-white' : 'bg-[#ECF1F4] text-[#9E9EA1]'}`}
               disabled={!selectedOption}
             >
               Create Account
             </button>
           </Link>
-          <p>Already have an account? <Link className='text-blue-600 underline' href="/login">Log in</Link></p>
+          <p>Already have an account? <Link className='text-blue-600 underline' href="/signin">signin</Link></p>
         </div>
       </div>
     </div>

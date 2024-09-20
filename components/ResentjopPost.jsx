@@ -101,7 +101,7 @@ const ResentjopPost = () => {
 
         <div className="w-full flex justify-center mt-[40px]">
         <Link href={"/create"}>
-                <button className='py-[10px] flex gap-7 items-center rounded-lg px-[30px] text-white bg-[#0097FF]'>
+                <button className='py-[10px] flex gap-7 items-center rounded-lg px-[30px] text-white bg-[#B53CC9]'>
                 Explore All Posts <FaArrowRightLong />
                 </button>
               </Link>

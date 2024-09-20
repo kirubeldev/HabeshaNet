@@ -25,7 +25,7 @@ const EmployerHowitworks = () => {
             {/* Button hidden but with fixed height */}
             <div className='mt-[40px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-300'>
               <Link href={"/create"}>
-                <button className='py-[10px] flex gap-7 items-center rounded-lg px-[30px] text-white bg-[#0097FF]'>
+                <button className='py-[10px] flex gap-7 items-center rounded-lg px-[30px] text-white bg-[#B53CC9]'>
                   Get Started <FaArrowRightLong />
                 </button>
               </Link>
@@ -52,7 +52,7 @@ const EmployerHowitworks = () => {
             {/* Button hidden but with fixed height */}
             <div className='mt-[60px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-300'>
               <Link href={"/create"}>
-                <button className='py-[10px] flex gap-7 items-center rounded-lg px-[30px] text-white bg-[#0097FF]'>
+                <button className='py-[10px] flex gap-7 items-center rounded-lg px-[30px] text-white bg-[#B53CC9]'>
                   Get Started <FaArrowRightLong />
                 </button>
               </Link>
@@ -79,7 +79,7 @@ const EmployerHowitworks = () => {
             {/* Button hidden but with fixed height */}
             <div className='mt-[40px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-300'>
               <Link href={"/create"}>
-                <button className='py-[10px] flex gap-7 items-center rounded-lg px-[30px] text-white bg-[#0097FF]'>
+                <button className='py-[10px] flex gap-7 items-center rounded-lg px-[30px] text-white bg-[#B53CC9]'>
                   Get Started <FaArrowRightLong />
                 </button>
               </Link>

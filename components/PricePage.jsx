@@ -33,14 +33,14 @@ const PricePage = () => {
             </p>
           </div>
           <div className="flex items-center gap-3 mt-[50px]">
-            <p className="text-[#0097FF] text-[12px] font-bold">
+            <p className="text-[#B53CC9] text-[12px] font-bold">
               Save 15% on yearly plan!
             </p>
             <div className="border p-1 rounded-3xl flex">
               <button
                 onClick={handleYearlyClick}
                 className={`py-[6px] flex items-center gap-4 rounded-3xl px-[30px] ${
-                  !monthly ? "bg-[#0097FF]" : "bg-transparent"
+                  !monthly ? "bg-[#B53CC9]" : "bg-transparent"
                 } ${!monthly ? "text-white" : "text-[#A1A1AA"}`}
               >
                 Monthly
@@ -48,7 +48,7 @@ const PricePage = () => {
               <button
                 onClick={handleMonthlyClick}
                 className={`py-[6px] flex items-center gap-4 rounded-3xl px-[30px] ${
-                  monthly ? "bg-[#0097FF]" : "bg-transparent"
+                  monthly ? "bg-[#B53CC9]" : "bg-transparent"
                 } ${monthly ? "text-white" : "text-[#A1A1AA"}`}
               >
                 yearly

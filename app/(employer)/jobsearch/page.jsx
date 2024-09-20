@@ -102,7 +102,7 @@ const Page = () => {
               <p>Filter</p>
             </div>
             <Link href={"/create"}>
-              <button className="py-[10px] flex gap-3 items-center rounded-lg px-[30px] text-white bg-[#0097FF]">
+              <button className="py-[10px] flex gap-3 items-center rounded-lg px-[30px] text-white bg-[#B53CC9]">
                 Post a new job <FiPlus className="text-xl text-white" />
               </button>
             </Link>

@@ -30,7 +30,7 @@ const Hero = () => {
               pariatur sumo <br /> repudiandae. Voluptas.
             </p>
             <div className="flex justify-between gap-3 pt-4">
-              <button className="py-[10px] flex gap-3 items-center rounded-lg px-[30px] text-white bg-[#0097FF]">
+              <button className="py-[10px] flex gap-3 items-center rounded-lg px-[30px] text-white bg-[#B53CC9]">
                 Find a Professional <FaArrowRightLong />
               </button>
               <button className="py-[10px] border flex gap-3 rounded-lg px-[30px]">

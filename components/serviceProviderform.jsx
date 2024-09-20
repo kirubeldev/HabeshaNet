@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import axios from '@/api/axios';
+import { useRouter } from 'next/navigation';
 
 const ServiceProviderForm = ({ accestocken }) => {
   // State for form inputs
@@ -47,7 +48,7 @@ const ServiceProviderForm = ({ accestocken }) => {
   const toggleDay = (day) => {
     setAvailabilityDays(prev => prev.includes(day) ? prev.filter(d => d !== day) : [...prev, day]);
   };
-
+const router = useRouter()
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -89,8 +90,9 @@ const ServiceProviderForm = ({ accestocken }) => {
         },
       });
 
-      if (response.status === 201) {
+      if (response.status) {
         alert('Profile saved successfully!');
+        router.push("/subpay");
         console.log(response.data);
         
       } else {
@@ -260,14 +262,14 @@ const handleAddNewTrainingFieldToqualifications = () => {
     <div>
       {/* Progress Indicators */}
       <div className='flex justify-center mt-10 items-center max-w-6xl mx-auto'>
-        <div className='size-[35px] flex justify-center items-center bg-[#FC9B00] rounded-full text-white font-semibold'>1</div>
-        <div className='w-[200px] border md:w-[290px] border-[#B2B2B5]'></div>
-        <div className='size-[35px] flex justify-center items-center bg-[#FC9B00] rounded-full text-white font-semibold'>2</div>
-        <div className='w-[200px] border md:w-[290px] border-[#B2B2B5]'></div>
-        <div className='size-[35px] flex justify-center items-center border-[3px] border-[#FC9B00] rounded-full text-white font-semibold'></div>
-        <div className='w-[200px] border md:w-[290px] border-[#B2B2B5]'></div>
-        <div className='size-[35px] flex justify-center items-center border-[3px] border-[#FC9B00] rounded-full text-white font-semibold'></div>
-      </div>
+                <div className='size-[35px] flex justify-center items-center bg-[#FC9B00] rounded-full text-white font-semibold'>1</div>
+                <div className='w-[200px] border md:w-[290px] border-[#B2B2B5]'></div>
+                <div className='size-[35px] flex justify-center items-center bg-[#FC9B00] rounded-full text-white font-bold'>2</div>
+          <div className='w-[200px] border md:w-[290px] border-[#B2B2B5]'></div>
+          <div className='size-[35px] flex justify-center items-center bg-[#FC9B00] rounded-full text-white font-bold'>3</div>
+          <div className='w-[200px] border md:w-[290px] border-[#B2B2B5]'></div>
+           <div className='size-[35px] flex justify-center items-center border-[3px] border-[#FC9B00] rounded-full text-[#FC9B00] font-semibold'>$</div>
+            </div>
 
       {/* Form */}
       <form onSubmit={handleSubmit}>
@@ -860,7 +862,7 @@ const handleAddNewTrainingFieldToqualifications = () => {
         <div className="flex items-center justify-center">
           <button
             type="submit"
-            className="bg-[#0097FF] text-white px-[30px] mt-[50px] py-[7px] rounded-md"
+            className="bg-[#B53CC9] text-white px-[30px] mt-[50px] py-[7px] rounded-md"
           >
             Save Profile
           </button>

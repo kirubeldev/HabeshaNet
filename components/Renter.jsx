@@ -42,7 +42,7 @@ const Renter = ({ accestocken }) => {
                 }
             });
 
-            if (response.status === 200) {
+            if (response.status) {
                 alert('Profile saved successfully!');
             } else {
                 alert('Failed to save profile.');
@@ -60,9 +60,7 @@ const Renter = ({ accestocken }) => {
                 <div className='w-[200px] border md:w-[290px] border-[#B2B2B5]'></div>
                 <div className='size-[35px] flex justify-center items-center bg-[#FC9B00] rounded-full text-white font-semibold'>2</div>
                 <div className='w-[200px] border md:w-[290px] border-[#B2B2B5]'></div>
-                <div className='size-[35px] flex justify-center items-center border-[3px] border-[#FC9B00] rounded-full text-white font-semibold'></div>
-                <div className='w-[200px] border md:w-[290px] border-[#B2B2B5]'></div>
-                <div className='size-[35px] flex justify-center items-center border-[3px] border-[#FC9B00] rounded-full text-white font-semibold'></div>
+                <div className='size-[35px] flex justify-center items-center bg-[#FC9B00] rounded-full text-white font-bold'>3</div>
             </div>
 
             <form onSubmit={handleSubmit}>
@@ -169,7 +167,7 @@ const Renter = ({ accestocken }) => {
                 </div>
 
                 <div className='flex w-full items-center justify-center'>
-                    <button type="submit" className="bg-[#0097FF] text-white px-[30px] mt-[50px] py-[7px] rounded-md">Save Profile</button>
+                    <button type="submit" className="bg-[#B53CC9] text-white px-[30px] mt-[50px] py-[7px] rounded-md">Save Profile</button>
                 </div>
             </form>
         </div>

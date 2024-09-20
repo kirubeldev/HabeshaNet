@@ -6,7 +6,7 @@ import { cookies } from 'next/headers'
 
 const Page = ()=> {
   const cookieStore = cookies()
-  const verificationToken = cookieStore.get('tact' ) 
+  const verificationToken = cookieStore.get('act' ) 
   return(
 <div>
 <VerificationForm verificationToken= {verificationToken?.value}/>

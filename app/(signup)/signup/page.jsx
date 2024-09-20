@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 const Page = () => {
   const [formData, setFormData] = useState({
-    emailorphoneNumber: '',
+    emailOrPhoneNumber: '', // Renamed for consistency
     password: '',
     confirmPassword: '',
   });
@@ -23,23 +23,29 @@ const Page = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
+  const validateForm = () => {
     const fieldErrors = {};
-    if (!formData.emailorphoneNumber) {
-      fieldErrors.emailorphoneNumber = 'Required';
+
+    if (!formData.emailOrPhoneNumber) {
+      fieldErrors.emailOrPhoneNumber = 'Email or Phone number is required';
     }
-    if (formData.password.length < 8) {
+    if (formData.password.length < 7) {
       fieldErrors.password = 'Password must be at least 8 characters long';
     }
-    if (formData.confirmPassword.length < 8) {
+    if (formData.confirmPassword.length < 7) {
       fieldErrors.confirmPassword = 'Confirm Password must be at least 8 characters long';
     }
     if (formData.password !== formData.confirmPassword) {
       fieldErrors.confirmPassword = "Passwords don't match";
     }
 
+    return fieldErrors;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const fieldErrors = validateForm();
     if (Object.keys(fieldErrors).length > 0) {
       setErrors(fieldErrors);
       return;
@@ -50,34 +56,35 @@ const Page = () => {
     try {
       const response = await axios.post("auth/signup", {
         userType,
-        emailOrPhoneNumber: formData.emailorphoneNumber,
+        emailOrPhoneNumber: formData.emailOrPhoneNumber,
         password: formData.password,
         confirmPassword: formData.confirmPassword,
       });
 
-      if (response.status === 201) {
-        router.push("/Verification");
+      if (response.status === 201) { // Assuming 201 status for success
+        router.push(`/Verification?type=${formData.emailOrPhoneNumber}`);
       }
     } catch (err) {
-      setErrors({ submit: 'Failed to create account. Please try again later.' });
+      alert("please select which type of user you want to be.  "  + err.response?.data?.message || 'Failed to create account. Please try again later.');
+     router.push("/create")
     }
+    
   };
 
   return (
-    <div>
-      <div className='flex justify-center mt-10 items-center max-w-6xl mx-auto'>
-        {/* Progress indicator */}
-        <div className='size-[35px] flex justify-center items-center bg-[#FC9B00] rounded-full text-white font-bold'>1</div>
-        <div className='w-[200px] border md:w-[290px] border-[#B2B2B5]'></div>
-        <div className='size-[35px] flex justify-center items-center border-[3px] border-[#FC9B00] rounded-full text-white font-bold'></div>
-        <div className='w-[200px] border md:w-[290px] border-[#B2B2B5]'></div>
-        <div className='size-[35px] flex justify-center items-center border-[3px] border-[#FC9B00] rounded-full text-white font-bold'></div>
-        <div className='w-[200px] border md:w-[290px] border-[#B2B2B5]'></div>
-        <div className='size-[35px] flex justify-center items-center border-[3px] border-[#FC9B00] rounded-full text-white font-bold'></div>
-      </div>
 
-      <div className="mt-[50px] flex item-center justify-center">
-        <div className="py-5 px-6 shadow-md">
+
+<div className=' bg-[#ECF1F4]  h-[100vh] pt-[53px]'>
+<div className='max-w-6xl mx-auto flex justify-between'>
+
+<Link href={"/"}><h1  className='text-[#161C2D] font-bold text-[20px]' >HabeshaNets.com</h1></Link> 
+<Link href={"/create"}><h1  className='text-[#B53CC9] underline  text-12px]' >Want to change type?</h1></Link> 
+      
+</div>
+<div className='flex h-full -mt-[53px] items-center justify-center '>
+
+<div className="mt-[50px] flex  item-center justify-center">
+        <div className="py-5 px-6 bg-white rounded-md">
           <div className="text-center text-[26px] pb-4 font-semibold">
             <p>Sign Up as {userType ? userType.replace(/([A-Z])/g, ' $1') : 'User'}</p>
           </div>
@@ -87,14 +94,14 @@ const Page = () => {
               <p className='text-[#161C2D] font-bold text-[16px] mt-4'>Email / Phone number</p>
               <input
                 type="text"
-                name="emailorphoneNumber"
+                name="emailOrPhoneNumber"
                 className='p-2 border rounded-xl outline-none text-[14px] md:min-w-[350px] w-full'
                 placeholder='i.e. example@example.com or 1234567890'
-                value={formData.emailorphoneNumber}
+                value={formData.emailOrPhoneNumber}
                 onChange={handleChange}
                 aria-label="Email or Phone Number"
               />
-              {errors.emailorphoneNumber && <p className='text-red-500'>{errors.emailorphoneNumber}</p>}
+              {errors.emailOrPhoneNumber && <p className='text-red-500'>{errors.emailOrPhoneNumber}</p>}
             </div>
 
             {/* Password */}
@@ -114,6 +121,7 @@ const Page = () => {
                   src={showPassword ? "/openeye.png" : "/eye.png"} 
                   className="object-contain size-[15px] cursor-pointer transition-transform"
                   onClick={() => setShowPassword(!showPassword)}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
                   alt={showPassword ? "Hide password" : "Show password"}
                 />
               </div>
@@ -137,6 +145,7 @@ const Page = () => {
                   src={showConfirmPassword ? "/openeye.png" : "/eye.png"} 
                   className="object-contain size-[15px] cursor-pointer transition-transform"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  aria-label={showConfirmPassword ? "Hide confirm password" : "Show confirm password"}
                   alt={showConfirmPassword ? "Hide confirm password" : "Show confirm password"}
                 />
               </div>
@@ -146,7 +155,7 @@ const Page = () => {
             {errors.submit && <p className='text-red-500'>{errors.submit}</p>} {/* Display submit error */}
 
             <div className="flex justify-center">
-              <button type="submit" className="bg-[#0097FF] mt-[40px] rounded-md text-white py-[7px] px-[30px]">
+              <button type="submit" className="bg-[#B53CC9] mt-[40px] rounded-md text-white py-[7px] px-[30px]">
                 Create Account
               </button>
             </div>
@@ -158,7 +167,25 @@ const Page = () => {
           </form>
         </div>
       </div>
+</div>
+    
     </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   );
 };
 

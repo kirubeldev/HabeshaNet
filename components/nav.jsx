@@ -21,11 +21,11 @@ const Nav = () => {
         </div>
         <div className='flex gap-5 items-center'>
             <Link  href={"/create"}>
-            <button className='py-[10px] rounded-lg px-[30px] text-white bg-[#0097FF]'>
+            <button className='py-[6px] rounded-lg px-[30px] text-[#B53CC9] hover:bg-[#B53CC9] duration-700 hover:text-[white] border border-[#B53CC9] outline-[#B53CC9]'>
               Signup
             </button></Link>
             <Link  href={"/signin"}>
-            <button className='py-[10px] rounded-lg px-[30px] text-white bg-[#b47aaf]'>
+            <button className='py-[6px] rounded-lg px-[30px] hover:bg-[transparent] hover:border hover:border-[#B53CC9] hover:text-[#B53CC9] duration-700 text-white bg-[#B53CC9]'>
 Signin            </button></Link>
         </div>
       </div>

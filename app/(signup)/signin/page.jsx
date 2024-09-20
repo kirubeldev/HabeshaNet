@@ -46,11 +46,57 @@ const Page = () => {
       });
 
       console.log('Form submitted successfully', response.data);
+      console.log(response.data.userType);
+     
+      if(!response.data.isProfileCompleted && response.data.userType === 'employer'){
+        router.push("/employerform");
+  
+      }else if(response.data.isProfileCompleted && response.data.userType === 'employer'){
+        router.push("/employer");
 
-      if (response.status === 201) {
-        // Navigate to the Verification page
-        router.push("/Verification");
       }
+
+
+      if(!response.data.isProfileCompleted && response.data.userType === 'serviceProvider'){
+        router.push("/serviceprovider");
+  
+      }else if(response.data.isProfileCompleted && response.data.userType === 'serviceProvider'){
+        router.push("/about");
+
+      }
+
+
+
+      if(!response.data.isProfileCompleted && response.data.userType === 'propertyOwner'){
+        router.push("/propertyowner");
+  
+      }else if(response.data.isProfileCompleted && response.data.userType === 'propertyOwner'){
+        router.push("/about");
+
+      }
+
+
+      if(!response.data.isProfileCompleted && response.data.userType === 'propertyRenter'){
+        router.push("/renter");
+  
+      }else if(response.data.isProfileCompleted && response.data.userType === 'propertyRenter'){
+        router.push("/about");
+
+      }
+
+
+
+      if(!response.data.isProfileCompleted && response.data.userType === 'babySitterFinder'){
+        router.push("/babysitterfinder");
+  
+      }else if(response.data.isProfileCompleted && response.data.userType === 'babySitterFinder'){
+        router.push("/about");
+
+      }
+
+
+
+
     } catch (err) {
       if (err instanceof z.ZodError) {
         // Capture and display validation errors
@@ -73,26 +119,24 @@ const Page = () => {
   };
 
   return (
-    <div>
-      <div className='flex justify-center mt-10 items-center max-w-6xl mx-auto'>
-        {/* Progress indicators */}
-        <div className='size-[35px] flex justify-center items-center bg-[#FC9B00] rounded-full text-white font-bold'>1</div>
-        <div className='w-[200px] border md:w-[290px] border-[#B2B2B5]'></div>
-        <div className='size-[35px] flex justify-center items-center border-[3px] border-[#FC9B00] rounded-full text-white font-bold'></div>
-        <div className='w-[200px] border md:w-[290px] border-[#B2B2B5]'></div>
-        <div className='size-[35px] flex justify-center items-center border-[3px] border-[#FC9B00] rounded-full text-white font-bold'></div>
-        <div className='w-[200px] border md:w-[290px] border-[#B2B2B5]'></div>
-        <div className='size-[35px] flex justify-center items-center border-[3px] border-[#FC9B00] rounded-full text-white font-bold'></div>
-      </div>
+<div className=' bg-[#ECF1F4] pt-[53px]'>
+<div className='max-w-6xl mx-auto'>
+<div>
+           <Link href={"/"}><h1  className='text-[#161C2D] font-bold text-[20px]' >HabeshaNets.com</h1></Link> 
+        </div>
+</div>
 
-      <div className="mt-[50px] flex item-center justify-center">
-        <div className="py-5 px-6 shadow-md">
+    <div className='h-[100vh] -mt-[53px] flex items-center justify-center bg-[#ECF1F4]'>
+    
+
+      <div className="mt-[50px]  rounded-md bg-white flex item-center justify-center">
+        <div className="py-5 px-6">
           <div className="text-center text-[26px] pb-4 font-semibold">
             <p>Sign In</p>
           </div>
           <form className='space-y-4' onSubmit={handleSubmit}>
             <div>
-              <p className='text-[#161C2D] font-bold text-[16px] mt-4'>Email / Phone number</p>
+              <p className='text-[#161C2D] mb-2 font-bold text-[16px] mt-4'>Email / Phone number</p>
               <input
                 type="text"
                 name="emailorphoneNumber"
@@ -107,11 +151,11 @@ const Page = () => {
 
             <div>
               <p className='text-[#161C2D] font-bold text-[16px] mt-4'>Password</p>
-              <div className="flex items-center p-2 border rounded-xl">
+              <div className="flex items-center p-2 border mt- rounded-xl">
                 <input
                   type={showPassword ? "text" : "password"}
                   name="password"
-                  className='outline-none text-[14px] md:min-w-[350px] w-full'
+                  className='outline-none text-[14px]  md:min-w-[350px] w-full'
                   placeholder='Enter your password'
                   value={formData.password}
                   onChange={handleChange}
@@ -132,19 +176,20 @@ const Page = () => {
             <div className="flex justify-center">
               <button 
                 type="submit" 
-                className="bg-[#0097FF] mt-[40px] rounded-md text-white py-[7px] px-[30px]"
+                className="bg-[#B53CC9] mt-[40px] rounded-md text-white py-[7px] px-[30px]"
                 disabled={loading}
               >
                 {loading ? 'Signing In...' : 'Sign In'}
               </button>
             </div>
-            <div className='flex gap-2 text-[14px] mt-2 items-center justify-end '>
+            <div className='flex gap-2 text-[12px] mt-5 items-center justify-end '>
               <p>Doesen't Have An account?</p>
               <Link className='text-blue-500' href="/create"> Signup</Link>
             </div>
           </form>
         </div>
-      </div>
+</div>
+</div>
     </div>
   );
 };

@@ -74,7 +74,7 @@ const Features = () => {
         </div>
 
 
-  <button className='py-[10px] flex  items-center gap-4 mt-12 rounded-lg px-[30px] text-white bg-[#0097FF]'>See more <FaArrowRightLong /></button>
+  <button className='py-[10px] flex  items-center gap-4 mt-12 rounded-lg px-[30px] text-white bg-[#B53CC9]'>See more <FaArrowRightLong /></button>
 
       </div>
     </div>
